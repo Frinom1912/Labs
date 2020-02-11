@@ -1,6 +1,6 @@
 #include "headers.h"
 
-int Menu()
+void Menu()
 {
 	std::cout << "\t\t\tÃËÀÂÍÎÅ ÌÅÍŞ\n";
 	std::cout << "1) ×òåíèå ÁÄ èç ôàéëà.\n";
@@ -10,10 +10,4 @@ int Menu()
 	std::cout << "5) Âûâîä ÁÄ íà ıêğàí.\n";
 	std::cout << "6) Âûõîä.\n\n";
 	std::cout << "Ââåäèòå íîìåğ æåëàåìîé îïåğàöèè: ";
-
-	int res; 
-	std::cin >> res;
-	std::cin.clear();
-	std::cin.ignore(10, '\n');
-	return res;
 }

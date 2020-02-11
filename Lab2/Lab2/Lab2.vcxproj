@@ -145,9 +145,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="planet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers.h" />
+    <ClInclude Include="planet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

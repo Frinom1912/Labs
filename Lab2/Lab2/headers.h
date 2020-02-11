@@ -2,6 +2,9 @@
 
 // Includes:
 #include <iostream>
-
+#include <conio.h>
+#include <fstream>
+#include <iomanip>
+#include "planet.h"
 // Functions:
-int Menu();
+void Menu();
