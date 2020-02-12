@@ -1,3 +1,4 @@
 # Labs
 
-# In progress of Lab2
+# Lab2 developing :)
+ 
