@@ -6,9 +6,12 @@ class Planet
 public:
 	static int ID;
 	std::ofstream& operator<<(std::ofstream& out);
-	Planet& operator>>(std::ifstream& in);
 	Planet();
+	//Planet(const Planet& object2);
+	//Planet(Planet&& object2);
 	~Planet();
+	Planet& operator=(const Planet& object);
+	friend std::ifstream& operator>>(std::ifstream& in, Planet& object);
 private:
 	char* name;
 	int name_size;
@@ -16,5 +19,3 @@ private:
 	int satellite;
 	int population;
 };
-
-int Planet::ID = 0;

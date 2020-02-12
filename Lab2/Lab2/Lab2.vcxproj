@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="planet.cpp" />
+    <ClCompile Include="reloads.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers.h" />
