@@ -34,12 +34,13 @@ int main()
 			{
 				in >> object[i];
 				i++;
-				Planet* temp = new Planet[i];
+				Planet* temp = new Planet[i+1];
 				for (int j = 0; j < i; j++)
 				{
 					temp[j] = object[j];
 				}
-				delete[] object;
+				if(object!=nullptr)
+					delete[] object;
 				object = temp;
 				temp = nullptr;
 			}

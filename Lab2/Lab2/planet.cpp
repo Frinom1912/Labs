@@ -31,7 +31,3 @@ Planet& Planet::operator=(const Planet& object)
 	return *this;
 }
 
-Planet::~Planet()
-{
-	delete[] this->name;
-}

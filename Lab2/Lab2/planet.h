@@ -9,7 +9,6 @@ public:
 	Planet();
 	//Planet(const Planet& object2);
 	//Planet(Planet&& object2);
-	~Planet();
 	Planet& operator=(const Planet& object);
 	friend std::ifstream& operator>>(std::ifstream& in, Planet& object);
 private:
