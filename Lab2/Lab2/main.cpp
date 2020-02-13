@@ -1,6 +1,5 @@
 #include "headers.h"
 
-int Planet::ID = 0;
 int main()
 {
 	setlocale(LC_ALL, "Rus");
@@ -49,6 +48,7 @@ int main()
 		case 2:
 		{		
 			std::ofstream out("text.txt", std::ios_base::trunc);
+			out << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
 			for (int j = 0; j < i-1; j++)
 			{
 				out << object[j];
@@ -58,7 +58,8 @@ int main()
 		case 3: break;
 		case 4: break;
 		case 5: break;
-		case 6: break;
+		case 6: 
+			return 0;
 		default: 
 			std::cout << "\nВведена неизвестная команда! Повторный ввод.\n"; 
 			_getch(); 
