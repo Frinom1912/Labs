@@ -2,7 +2,7 @@
 
 std::ofstream& operator<<(std::ofstream& out, const Planet& object)
 {
-	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.satellite << " " << std::setw(9) << object.population << "\n";
+	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.population << " " << std::setw(9) << object.satellite << "\n";
 	return out;
 }
 
@@ -32,22 +32,22 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 			{
 				if (countSp == 1)
 				{
-					object.diameter += sym - '0';
 					object.diameter *= 10;
+					object.diameter += sym - '0';
 				}
 				else
 				{
 					if (countSp == 2)
 					{
-						object.population += sym - '0';
 						object.population *= 10;
+						object.population += sym - '0';
 					}
 					else
 					{
 						if (countSp == 3)
 						{
-							object.satellite += sym - '0';
 							object.satellite *= 10;
+							object.satellite += sym - '0';
 						}
 					}
 				}
@@ -61,16 +61,16 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 			countSp++;
 		}
 		if (!flag)
-		{
 			in >> std::noskipws >> sym;
-		}
 		else
 			flag = false;
 	}
-
-	object.diameter /= 10;
-	object.population /= 10;
-	object.satellite /= 10;
-
+	std::cout << sym;
 	return in;
 }
+
+std::ostream& operator<<(std::ostream& out, const Planet& object)
+{
+	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.population << " " << std::setw(9) << object.satellite << "\n";
+	return out;
+} 

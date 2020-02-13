@@ -7,7 +7,7 @@ int main()
 	int i = 0;
 	const char* name = "info.txt";
 
-	Planet* object = new Planet[1];
+	Planet* object = nullptr;
 
 	while (input != 6)
 	{
@@ -31,18 +31,19 @@ int main()
 				in >> std::noskipws >> sym;
 			while (!in.eof())
 			{
-				in >> object[i];
 				i++;
-				Planet* temp = new Planet[i+1];
-				for (int j = 0; j < i; j++)
+				Planet* temp = new Planet[i];
+				for (int j = 0; j < i-1; j++)
 				{
 					temp[j] = object[j];
 				}
+				in >> temp[i-1];
 				if(object!=nullptr)
 					delete[] object;
 				object = temp;
 				temp = nullptr;
 			}
+			in.close();
 			break;
 		}
 		case 2:
@@ -53,11 +54,21 @@ int main()
 			{
 				out << object[j];
 			}
+			out.close();
 			break;
 		}
 		case 3: break;
 		case 4: break;
-		case 5: break;
+		case 5: 
+		{
+			std::cout << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
+			for (int j = 0; j < i; j++)
+			{
+				std::cout << object[j];
+			}
+			_getch();
+			break;
+		}
 		case 6: 
 			return 0;
 		default: 

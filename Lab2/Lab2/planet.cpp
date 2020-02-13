@@ -15,10 +15,8 @@ Planet& Planet::operator=(const Planet& object)
 	this->name = new char[this->name_size];
 	for (int i = 0; i < this->name_size; i++)
 		this->name[i] = object.name[i];
-	this->name[this->name_size] = '\0';
 	this->diameter = object.diameter;
 	this->population = object.population;
 	this->satellite = object.satellite;
 	return *this;
 }
-
