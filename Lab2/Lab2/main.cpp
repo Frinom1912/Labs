@@ -5,6 +5,7 @@ int main()
 {
 	setlocale(LC_ALL, "Rus");
 	int input = 0;
+	int i = 0;
 	const char* name = "info.txt";
 
 	Planet* object = new Planet[1];
@@ -29,23 +30,31 @@ int main()
 			in >> std::noskipws >> sym;
 			while (sym != '\n')
 				in >> std::noskipws >> sym;
-			int i = 0;
 			while (!in.eof())
 			{
 				in >> object[i];
 				i++;
-				Planet* temp = new Planet[i];
+				Planet* temp = new Planet[i+1];
 				for (int j = 0; j < i; j++)
 				{
 					temp[j] = object[j];
 				}
-				delete[] object;
+				if(object!=nullptr)
+					delete[] object;
 				object = temp;
 				temp = nullptr;
 			}
 			break;
 		}
-		case 2: break;
+		case 2:
+		{		
+			std::ofstream out("text.txt", std::ios_base::trunc);
+			for (int j = 0; j < i-1; j++)
+			{
+				out << object[j];
+			}
+			break;
+		}
 		case 3: break;
 		case 4: break;
 		case 5: break;
