@@ -1,14 +1,5 @@
 #include "headers.h"
 
-std::ofstream& Planet::operator<<(std::ofstream& out)
-{
-	if (Planet::ID == 0)
-		out << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
-	else
-		out << std::left << std::setw(10) << this->name << " " << std::setw(8) << this->diameter << " " << std::setw(7) << this->satellite << " " << std::setw(9) << this->population << "\n";
-	return out;
-}
-
 Planet::Planet()
 {
 	this->name = new char[1];
