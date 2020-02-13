@@ -2,12 +2,7 @@
 
 std::ofstream& operator<<(std::ofstream& out, const Planet& object)
 {
-	if (Planet::ID == 0)
-	{
-		out << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
-		Planet::ID++;
-	}
-		out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.satellite << " " << std::setw(9) << object.population << "\n";
+	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.satellite << " " << std::setw(9) << object.population << "\n";
 	return out;
 }
 

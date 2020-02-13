@@ -4,7 +4,6 @@
 class Planet
 {
 public:
-	static int ID;
 	friend std::ofstream& operator<<(std::ofstream& out, const Planet& object);
 	Planet();
 	//Planet(const Planet& object2);
