@@ -26,6 +26,7 @@ int main()
 		{
 			std::ifstream in("text.txt");
 			unsigned char sym;
+			unsigned char lastSym = ' ';
 			in >> std::noskipws >> sym;
 			while (sym != '\n')
 				in >> std::noskipws >> sym;
@@ -33,16 +34,33 @@ int main()
 			{
 				i++;
 				Planet* temp = new Planet[i];
-				for (int j = 0; j < i-1; j++)
+				for (int j = 0; j < i - 1; j++)
 				{
 					temp[j] = object[j];
 				}
-				in >> temp[i-1];
-				if(object!=nullptr)
+				in >> temp[i - 1];
+				if (object != nullptr)
 					delete[] object;
 				object = temp;
 				temp = nullptr;
 			}
+			/*	in.seekg(-1, std::ios_base::cur);
+				in >> std::noskipws >> lastSym;
+			}
+			if (lastSym == '\n')
+			{
+				Planet* temp = new Planet[i-1];
+				for (int j = 0; j < i - 1; j++)
+				{
+					temp[j] = object[j];
+				}
+				i--;
+				if (object != nullptr)
+					delete[] object;
+				object = temp;
+				temp = nullptr;
+			}
+			*/
 			in.close();
 			break;
 		}
