@@ -9,6 +9,17 @@ Planet::Planet()
 	this->population = 0;
 }
 
+Planet::Planet(const Planet& object)
+{
+	*this = object;
+	std::cout << "WORKS";
+}
+
+Planet::~Planet()
+{
+	delete[] this->name;
+}
+
 Planet& Planet::operator=(const Planet& object)
 {
 	this->name_size = object.name_size;

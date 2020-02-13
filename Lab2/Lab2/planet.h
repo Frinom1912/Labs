@@ -6,6 +6,8 @@ class Planet
 public:
 	
 	Planet();
+	Planet(const Planet& object);
+	~Planet();
 	Planet& operator=(const Planet& object);
 	friend std::ostream& operator<<(std::ostream& out, const Planet& object);
 	friend std::ofstream& operator<<(std::ofstream& out, const Planet& object);
