@@ -5,7 +5,7 @@ int main()
 	setlocale(LC_ALL, "Rus");
 	int i = 0;
 	const char* name = "info.txt";
-
+	//привет
 	Planet* object = nullptr;
 
 	while (true)
