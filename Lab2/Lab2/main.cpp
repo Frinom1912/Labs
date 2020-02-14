@@ -44,23 +44,6 @@ int main()
 				object = temp;
 				temp = nullptr;
 			}
-			/*	in.seekg(-1, std::ios_base::cur);
-				in >> std::noskipws >> lastSym;
-			}
-			if (lastSym == '\n')
-			{
-				Planet* temp = new Planet[i-1];
-				for (int j = 0; j < i - 1; j++)
-				{
-					temp[j] = object[j];
-				}
-				i--;
-				if (object != nullptr)
-					delete[] object;
-				object = temp;
-				temp = nullptr;
-			}
-			*/
 			in.close();
 			break;
 		}
@@ -68,9 +51,11 @@ int main()
 		{		
 			std::ofstream out("text.txt", std::ios_base::trunc);
 			out << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
-			for (int j = 0; j < i-1; j++)
+			for (int j = 0; j < i; j++)
 			{
 				out << object[j];
+				if (j != i - 1)
+					out << '\n';
 			}
 			out.close();
 			break;
@@ -79,10 +64,10 @@ int main()
 		case 4: break;
 		case 5: 
 		{
-			std::cout << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
+			std::cout << "   " << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
 			for (int j = 0; j < i; j++)
 			{
-				std::cout << object[j];
+				std::cout << j+1 << ") " << object[j];
 			}
 			_getch();
 			break;

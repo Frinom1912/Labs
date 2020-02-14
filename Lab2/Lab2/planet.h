@@ -4,7 +4,7 @@
 class Planet
 {
 public:
-	
+	static void edit();
 	Planet();
 	Planet(const Planet& object);
 	~Planet();

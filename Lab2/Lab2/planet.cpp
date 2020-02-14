@@ -12,7 +12,6 @@ Planet::Planet()
 Planet::Planet(const Planet& object)
 {
 	*this = object;
-	std::cout << "WORKS";
 }
 
 Planet::~Planet()
@@ -30,4 +29,24 @@ Planet& Planet::operator=(const Planet& object)
 	this->population = object.population;
 	this->satellite = object.satellite;
 	return *this;
+}
+
+void Planet::edit(char* newName)
+{
+	
+}
+
+void Planet::edit(int newDiameter)
+{
+
+}
+
+void Planet::edit(int newSatellite)
+{
+
+}
+
+void Planet::edit(char* newName)
+{
+
 }
