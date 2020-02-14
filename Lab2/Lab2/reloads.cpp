@@ -2,7 +2,7 @@
 
 std::ofstream& operator<<(std::ofstream& out, const Planet& object)
 {
-	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.population << " " << std::setw(9) << object.satellite;
+	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(8) << object.population << " " << object.satellite;
 	return out;
 }
 
@@ -70,7 +70,7 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 
 std::ostream& operator<<(std::ostream& out, const Planet& object)
 {
-	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.population << " " << std::setw(9) << object.satellite << "\n";
+	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(8) << object.population << " " << object.satellite << "\n";
 	return out;
 } 
 
