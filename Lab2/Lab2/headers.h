@@ -8,3 +8,4 @@
 #include "planet.h"
 // Functions:
 void Menu();
+void edit();

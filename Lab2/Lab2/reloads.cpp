@@ -73,3 +73,31 @@ std::ostream& operator<<(std::ostream& out, const Planet& object)
 	out << std::left << std::setw(10) << object.name << " " << std::setw(8) << object.diameter << " " << std::setw(7) << object.population << " " << std::setw(9) << object.satellite << "\n";
 	return out;
 } 
+
+std::istream& operator>>(std::istream& in, Planet& object)
+{
+	std::cout << "¬ведите название планеты: ";
+	char newName[20];
+	std::cin >> newName;
+	int i = 0;
+	for (; newName[i] != '\0'; i++);
+	if (object.name != nullptr)
+		delete[] object.name;
+	object.name = new char[i + 1];
+	for (int j = 0; j < i + 1; j++)
+		object.name[j] = newName[j];
+	object.name_size = i + 1;
+	std::cout << "\n¬ведите диаметр планеты: ";
+	int newDiameter;
+	std::cin >> newDiameter;
+	object.diameter = newDiameter;
+	std::cout << "\n¬ведите состо€ние жизни на планете: ";
+	int newPopulation;
+	std::cin >> newPopulation;
+	object.population = newPopulation;
+	std::cout << "\n¬ведите количество спутников планеты: ";
+	int newSatellite;
+	std::cin >> newSatellite;
+	object.satellite = newSatellite;
+	return in;
+}

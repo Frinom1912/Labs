@@ -3,23 +3,29 @@
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	int input = 0;
 	int i = 0;
 	const char* name = "info.txt";
 
 	Planet* object = nullptr;
 
-	while (input != 6)
+	while (true)
 	{
-		system("cls");
-
-		Menu();
-
-		int res;
-		std::cin >> res;
-		std::cin.clear();
-		std::cin.ignore(10, '\n');
-
+		int res = -1;
+		while (true)
+		{
+			system("cls");
+			Menu();
+			std::cin >> res;
+			if (res < 1 && res > 4)
+			{
+				std::cout << "\nВведена неизвестная операция, повторите ввод!\n";
+				_getch();
+			}
+			else
+				break;
+			std::cin.clear();
+			std::cin.ignore(10, '\n');
+		}
 		switch (res)
 		{
 		case 1:
@@ -61,7 +67,150 @@ int main()
 			break;
 		}
 		case 3: break;
-		case 4: break;
+		case 4:
+		{
+			int resEdit=-1;
+			while (true)
+			{
+				system("cls");
+				edit();
+				std::cin >> resEdit;
+				if (resEdit < 1 && resEdit > 4)
+				{
+					std::cout << "\nВведена неизвестная операция, повторите ввод!\n";
+					_getch();
+				}
+				else
+					break;
+				std::cin.clear();
+				std::cin.ignore(10, '\n');
+			}
+			switch (resEdit)
+			{
+			case 1:
+			{
+				system("cls");
+				std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
+				for (int j = 0; j < i; j++)
+				{
+					std::cout << j+1 << ") " << object[j];
+				}
+				std::cout << "\n\nВыберите строку (число от 1 до " << i << "): ";
+				int editStr;
+				std::cin >> editStr;
+				int edit;
+				while (true)
+				{
+					system("cls");
+					std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
+					std::cout << "1) Изменить имя\n";
+					std::cout << "2) Изменить диаметр\n";
+					std::cout << "3) Изменить количество спутников\n";
+					std::cout << "4) Изменить показатель жизни\n\n";
+					std::cout << "Введите номер операции: ";
+					std::cin >> edit;
+					if (edit < 1 && edit > 4)
+					{
+						std::cout << "\nВведена неизвестная операция, повторите ввод!\n";
+						_getch();
+					}
+					else
+						break;
+					std::cin.clear();
+					std::cin.ignore(10, '\n');
+				}
+				switch (edit)
+				{
+				case 1:
+				{
+					system("cls");
+					std::cout << "Введите новое имя: ";
+					char newName[15];
+					std::cin >> newName;
+					object[editStr-1].editName(newName);
+					break;
+				}
+				case 2:
+				{
+					system("cls");
+					std::cout << "Введите новый диаметр: ";
+					int newDiameter;
+					std::cin >> newDiameter;
+					object[editStr-1].editDiameter(newDiameter);
+					break;
+				}
+				case 3:
+				{
+					system("cls");
+					std::cout << "Введите новое состояние жизни: ";
+					int newPopulation;
+					std::cin >> newPopulation;
+					object[editStr-1].editPopulation(newPopulation);
+					break;
+				}
+				case 4:
+				{
+					system("cls");
+					std::cout << "Введите новое количество спутников: ";
+					int newSatellite;
+					std::cin >> newSatellite;
+					object[editStr-1].editSatellite(newSatellite);
+					break;
+				}
+				}
+				break;
+			}
+			case 2:
+			{
+				Planet* temp = new Planet[i + 1];
+				for (int j = 0; j < i; j++)
+					temp[j] = object[j];
+				std::cin >> temp[i];
+				delete[] object;
+				object = temp; 
+				temp = nullptr;
+				i++;
+				break;
+			}
+			case 3:
+			{
+				system("cls");
+				std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
+				for (int j = 0; j < i; j++)
+				{
+					std::cout << j + 1 << ") " << object[j];
+				}
+				std::cout << "\n\nВыберите строку (число от 1 до " << i << "): ";
+				int editStr;
+				std::cin >> editStr;
+				Planet* temp = new Planet[i - 1];
+				int k = 0;
+				bool flag = true;
+				if (editStr == i)
+				{
+					flag = false;
+					i--;
+				}
+				for (int j = 0; j < i; j++, k++)
+				{
+					if (j == editStr - 1 && j != i-1)
+					{
+						j++;
+					}
+					temp[k] = object[j];
+				}
+				delete[] object; 
+				object = temp;
+				temp = nullptr;
+				if(flag)
+				i--;
+				break;
+			}
+			case 4:	break;
+			}
+
+			break;
+		}
 		case 5: 
 		{
 			std::cout << "   " << std::left << std::setw(10) << "Название" << " " << std::setw(8) << "Диаметр" << " " << std::setw(7) << "Жизни" << " " << std::setw(9) << "Спутники\n";
@@ -74,10 +223,6 @@ int main()
 		}
 		case 6: 
 			return 0;
-		default: 
-			std::cout << "\nВведена неизвестная команда! Повторный ввод.\n"; 
-			_getch(); 
-			break;
 		}
 	}
 	delete[] object;

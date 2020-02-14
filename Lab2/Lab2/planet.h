@@ -4,7 +4,10 @@
 class Planet
 {
 public:
-	static void edit();
+	void editName(char*);
+	void editDiameter(int&);
+	void editSatellite(int&);
+	void editPopulation(int&);
 	Planet();
 	Planet(const Planet& object);
 	~Planet();
@@ -12,6 +15,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const Planet& object);
 	friend std::ofstream& operator<<(std::ofstream& out, const Planet& object);
 	friend std::ifstream& operator>>(std::ifstream& in, Planet& object);
+	friend std::istream& operator>>(std::istream& in, Planet& object);
 private:
 	char* name;
 	int name_size;

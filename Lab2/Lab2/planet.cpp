@@ -31,22 +31,30 @@ Planet& Planet::operator=(const Planet& object)
 	return *this;
 }
 
-void Planet::edit(char* newName)
+void Planet::editName(char* newName)
 {
-	
+	if (this->name != nullptr)
+		delete[] this->name;
+	int i = 0;
+	while (newName[i] != '\0')
+		i++;
+	this->name = new char[i+1];
+	for (int j = 0; j < i + 1; j++)
+		this->name[j] = newName[j];
+	this->name_size = i+1;
 }
 
-void Planet::edit(int newDiameter)
+void Planet::editDiameter(int& newDiameter)
 {
-
+	this->diameter = newDiameter;
 }
 
-void Planet::edit(int newSatellite)
+void Planet::editSatellite(int& newSatellte)
 {
-
+	this->satellite = newSatellte;
 }
 
-void Planet::edit(char* newName)
+void Planet::editPopulation(int& newPopulation)
 {
-
+	this->population = newPopulation;
 }
