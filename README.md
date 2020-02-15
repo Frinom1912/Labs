@@ -2,5 +2,5 @@
 
 # Lab2 is done :)
 # TODO
-  Fix memory
-  Optimise
+  1)Fix memory
+  2)Optimise
