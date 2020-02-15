@@ -8,6 +8,10 @@ public:
 	void editDiameter(int&);
 	void editSatellite(int&);
 	void editPopulation(int&);
+	static void sortName(Planet*, const int&);
+	static Planet* ReadBase(const char*, Planet*, int&);
+	static void WriteBase(const char*, const Planet*, const int&);
+	static Planet* EditBase(Planet*, int&);
 	Planet();
 	Planet(const Planet& object);
 	~Planet();
@@ -22,4 +26,7 @@ private:
 	int diameter;
 	int satellite;
 	int population;
+
+	char* strCopy(char* arr1, char* arr2);
+	int length(char* arr);
 };

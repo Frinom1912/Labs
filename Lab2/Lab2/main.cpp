@@ -27,27 +27,27 @@ int main()
 		{
 		case 1:
 		{
-			object = ReadBase("text.txt", object, objectCount);
+			object = Planet::ReadBase("text.txt", object, objectCount);
 			break;
 		}
 		case 2:
 		{		
-			WriteBase("text.txt", object, objectCount);
+			Planet::WriteBase("text.txt", object, objectCount);
 			break;
 		}
 		case 3:
 		{
-
+			Planet::sortName(object, objectCount);
 			break;
 		}
 		case 4:
 		{
-			object = EditBase(object, objectCount);
+			object = Planet::EditBase(object, objectCount);
 			break;
 		}
 		case 5: 
 		{
-			std::cout << "    " << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
+			std::cout << "   " << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
 			for (int j = 0; j < objectCount; j++)
 			{
 				std::cout << j+1 << ") " << object[j];
