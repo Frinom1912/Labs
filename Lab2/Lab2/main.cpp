@@ -3,9 +3,8 @@
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	int i = 0;
+	int objectCount = 0;
 	const char* name = "info.txt";
-	//привет
 	Planet* object = nullptr;
 
 	while (true)
@@ -38,13 +37,13 @@ int main()
 				in >> std::noskipws >> sym;
 			while (!in.eof())
 			{
-				i++;
-				Planet* temp = new Planet[i];
-				for (int j = 0; j < i - 1; j++)
+				objectCount++;
+				Planet* temp = new Planet[objectCount];
+				for (int j = 0; j < objectCount - 1; j++)
 				{
 					temp[j] = object[j];
 				}
-				in >> temp[i - 1];
+				in >> temp[objectCount - 1];
 				if (object != nullptr)
 					delete[] object;
 				object = temp;
@@ -57,10 +56,10 @@ int main()
 		{		
 			std::ofstream out("text.txt", std::ios_base::trunc);
 			out << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
-			for (int j = 0; j < i; j++)
+			for (int j = 0; j < objectCount; j++)
 			{
 				out << object[j];
-				if (j != i - 1)
+				if (j != objectCount - 1)
 					out << '\n';
 			}
 			out.close();
@@ -89,15 +88,15 @@ int main()
 			{
 			case 1:
 			{
-				if (i > 0)
+				if (objectCount > 0)
 				{
 					system("cls");
 					std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
-					for (int j = 0; j < i; j++)
+					for (int j = 0; j < objectCount; j++)
 					{
 						std::cout << j + 1 << ") " << object[j];
 					}
-					std::cout << "\n\nВыберите строку (число от 1 до " << i << "): ";
+					std::cout << "\n\nВыберите строку (число от 1 до " << objectCount << "): ";
 					int editStr;
 					std::cin >> editStr;
 					int edit;
@@ -172,47 +171,47 @@ int main()
 			case 2:
 			{
 				system("cls");
-				Planet* temp = new Planet[i + 1];
-				for (int j = 0; j < i; j++)
+				Planet* temp = new Planet[objectCount + 1];
+				for (int j = 0; j < objectCount; j++)
 					temp[j] = object[j];
-				std::cin >> temp[i];
+				std::cin >> temp[objectCount];
 				delete[] object;
 				object = temp; 
 				temp = nullptr;
-				i++;
+				objectCount++;
 				break;
 			}
 			case 3:
 			{
-				if (i > 0)
+				if (objectCount > 0)
 				{
 					system("cls");
 					std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
-					for (int j = 0; j < i; j++)
+					for (int j = 0; j < objectCount; j++)
 					{
 						std::cout << j + 1 << ") " << object[j];
 					}
-					std::cout << "\n\nВыберите строку (число от 1 до " << i << "): ";
+					std::cout << "\n\nВыберите строку (число от 1 до " << objectCount << "): ";
 					int editStr;
 					while (true)
 					{
 						std::cin >> editStr;
-						if (editStr - 1 > i-1 || editStr < 1)
+						if (editStr > objectCount || editStr < 1)
 							std::cout << "Ошибка, данная строка не существует!\n";
 						else
 							break;
 					}
-					Planet* temp = new Planet[i - 1];
+					Planet* temp = new Planet[objectCount - 1];
 					int k = 0;
 					bool flag = true;
-					if (editStr == i)
+					if (editStr == objectCount)
 					{
 						flag = false;
-						i--;
+						objectCount--;
 					}
-					for (int j = 0; j < i; j++, k++)
+					for (int j = 0; j < objectCount; j++, k++)
 					{
-						if (j == editStr - 1 && j != i - 1)
+						if (j == editStr - 1 && j != objectCount - 1)
 						{
 							j++;
 						}
@@ -222,7 +221,7 @@ int main()
 					object = temp;
 					temp = nullptr;
 					if (flag)
-						i--;
+						objectCount--;
 				}
 				else
 				{
@@ -240,7 +239,7 @@ int main()
 		case 5: 
 		{
 			std::cout << "   " << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
-			for (int j = 0; j < i; j++)
+			for (int j = 0; j < objectCount; j++)
 			{
 				std::cout << j+1 << ") " << object[j];
 			}
