@@ -6,7 +6,7 @@ Planet::Planet()
 	this->name_size = 1;
 	this->diameter = 0;
 	this->satellite = 0;
-	this->population = 0;
+	this->population = false;
 }
 
 Planet::Planet(const Planet& object)
@@ -16,6 +16,9 @@ Planet::Planet(const Planet& object)
 
 Planet::~Planet()
 {
+	this->diameter = 0;
+	this->population = false;
+	this->satellite = 0;
 	delete[] this->name;
 }
 
@@ -44,28 +47,13 @@ void Planet::editName(char* newName)
 	this->name_size = i+1;
 }
 
-void Planet::editDiameter(int& newDiameter)
-{
-	this->diameter = newDiameter;
-}
-
-void Planet::editSatellite(int& newSatellte)
-{
-	this->satellite = newSatellte;
-}
-
-void Planet::editPopulation(int& newPopulation)
-{
-	this->population = newPopulation;
-}
-
 void Planet::sortName(Planet* object, const int& objectCount)
 {
 	for (int i = 0; i < objectCount - 1; i++)
 	{
 		for (int j = i + 1; j < objectCount; j++)
 		{
-			if (strcmp(object[i].name, object[j].name) > 0)
+			if (object[i] < object[j])
 			{
 				Planet temp;
 				temp = object[i];
@@ -80,23 +68,14 @@ Planet* Planet::ReadBase(const char* fileName, Planet* object, int& objectCount)
 {
 	std::ifstream in(fileName);
 	unsigned char sym;
-	unsigned char lastSym = ' ';
+	unsigned char lastSym;
 	in >> std::noskipws >> sym;
 	while (sym != '\n')
 		in >> std::noskipws >> sym;
 	while (!in.eof())
 	{
-		objectCount++;
-		Planet* temp = new Planet[objectCount];
-		for (int j = 0; j < objectCount - 1; j++)
-		{
-			temp[j] = object[j];
-		}
-		in >> temp[objectCount - 1];
-		if (object != nullptr)
-			delete[] object;
-		object = temp;
-		temp = nullptr;
+		object = resize(object, objectCount, 1);
+		in >> object[objectCount-1];
 	}
 	in.close();
 	return object;
@@ -130,8 +109,6 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 		}
 		else
 			break;
-		std::cin.clear();
-		std::cin.ignore(10, '\n');
 	}
 	switch (resEdit)
 	{
@@ -155,8 +132,8 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 				std::cout << "\tРЕДАКТИРОВАНИЕ СТРОКИ\n";
 				std::cout << "1) Изменить имя\n";
 				std::cout << "2) Изменить диаметр\n";
-				std::cout << "3) Изменить количество спутников\n";
-				std::cout << "4) Изменить показатель жизни\n\n";
+				std::cout << "3) Изменить показатель жизни\n";
+				std::cout << "4) Изменить количество спутников\n\n";
 				std::cout << "Введите номер операции: ";
 				std::cin >> edit;
 				if (edit < 1 && edit > 4)
@@ -166,45 +143,78 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 				}
 				else
 					break;
-				std::cin.clear();
-				std::cin.ignore(10, '\n');
 			}
+			char newData[15]; 
 			switch (edit)
 			{
 			case 1:
 			{
 				system("cls");
 				std::cout << "Введите новое имя: ";
-				char newName[15];
-				std::cin >> newName;
-				object[editStr - 1].editName(newName);
+				std::cin >> newData;
+				object[editStr - 1].editName(newData);
 				break;
 			}
 			case 2:
 			{
 				system("cls");
-				std::cout << "Введите новый диаметр: ";
 				int newDiameter;
-				std::cin >> newDiameter;
-				object[editStr - 1].editDiameter(newDiameter);
+				while (true)
+				{
+					std::cout << "Введите новый диаметр: ";
+					std::cin >> newData;
+					newDiameter = toInt(newData);
+					if (newDiameter != -1)
+						break;
+					else
+					{
+						std::cout << "Некорректный ввод!\n";
+						_getch();
+					}
+				}
+				object[editStr - 1].diameter = newDiameter;
 				break;
 			}
 			case 3:
 			{
 				system("cls");
-				std::cout << "Введите новое состояние жизни: ";
-				int newPopulation;
-				std::cin >> newPopulation;
-				object[editStr - 1].editPopulation(newPopulation);
+				bool newPopulation;
+				while (true)
+				{
+					std::cout << "Введите новое состояние жизни: ";
+					std::cin >> newData;
+					int i = 0;
+					for (; newData[i] != '\0'; i++);
+					if (i > 1 || (newData[0] > '1' || newData[0] < '0'))
+					{
+						std::cout << "Некорректный ввод!\n";
+						_getch();
+					}
+					else
+						break;
+				}
+				newPopulation = newData[0] - '0';
+					object[editStr - 1].population = newPopulation;
 				break;
 			}
 			case 4:
 			{
 				system("cls");
-				std::cout << "Введите новое количество спутников: ";
 				int newSatellite;
-				std::cin >> newSatellite;
-				object[editStr - 1].editSatellite(newSatellite);
+				while (true)
+				{
+					std::cout << "Введите новое количество спутников: ";
+					std::cin >> newData;
+					newSatellite = toInt(newData);
+					if (newSatellite != -1)
+						break;
+					else
+					{
+						std::cout << "Некорректный ввод!\n";
+						_getch();
+					}
+				}
+				object[editStr - 1].satellite = newSatellite;
 				break;
 			}
 			}
@@ -212,7 +222,7 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 		else
 		{
 			system("cls");
-			std::cout << "БД уже пуста!\n";
+			std::cout << "БД пуста!\n";
 			_getch();
 		}
 		break;
@@ -220,14 +230,8 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 	case 2:
 	{
 		system("cls");
-		Planet* temp = new Planet[objectCount + 1];
-		for (int j = 0; j < objectCount; j++)
-			temp[j] = object[j];
-		std::cin >> temp[objectCount];
-		delete[] object;
-		object = temp;
-		temp = nullptr;
-		objectCount++;
+		object = resize(object, objectCount, 1);
+		std::cin >> object[objectCount-1];
 		break;
 	}
 	case 3:
@@ -293,14 +297,31 @@ int Planet::length(char* arr)
 	return length;
 }
 
-
-char* Planet::strCopy(char* arr1, char* arr2)
+int Planet::toInt(const char* arr)
 {
-	delete[] arr1;
-	arr1 = new char[length(arr2) + 1];
+	int res = 0;
+	for (int i = 0; arr[i] != '\0'; i++)
+	{
+		if (arr[i] >= '0' && arr[i] <= '9')
+		{
+			res *= 10;
+			res += arr[i] - '0';
+		}
+		else
+			return -1;
+	}
+	return res;
+}
 
-	for (int i = 0; i < length(arr2) + 1; i++)
-		arr1[i] = arr2[i];
-
-	return arr1;
+Planet* Planet::resize(Planet* object, int& arr_size, const int& num_of_resize)
+{
+	Planet* temp = new Planet[arr_size + num_of_resize];
+	for (int j = 0; j < (num_of_resize > 0 ? arr_size : arr_size-num_of_resize); j++)
+	{
+		temp[j] = object[j];
+	}
+	if (object != nullptr)
+		delete[] object;
+	arr_size+=num_of_resize;
+	return temp;
 }
