@@ -47,7 +47,7 @@ int main()
 		}
 		case 5: 
 		{
-			std::cout << "   " << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
+			std::cout << "   " << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(6) << "Жизни" << " " << "Спутники\n";
 			for (int j = 0; j < objectCount; j++)
 			{
 				std::cout << j+1 << ") " << object[j];

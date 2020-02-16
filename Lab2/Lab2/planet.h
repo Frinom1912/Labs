@@ -4,10 +4,6 @@
 class Planet
 {
 public:
-	void editName(char*);
-	void editDiameter(int&);
-	void editSatellite(int&);
-	void editPopulation(int&);
 	static void sortName(Planet*, const int&);
 	static Planet* ReadBase(const char*, Planet*, int&);
 	static void WriteBase(const char*, const Planet*, const int&);
@@ -20,13 +16,17 @@ public:
 	friend std::ofstream& operator<<(std::ofstream& out, const Planet& object);
 	friend std::ifstream& operator>>(std::ifstream& in, Planet& object);
 	friend std::istream& operator>>(std::istream& in, Planet& object);
+	friend bool operator<(const Planet& object1, const Planet& object2);
 private:
 	char* name;
 	int name_size;
 	int diameter;
 	int satellite;
-	int population;
+	bool population;
 
-	char* strCopy(char* arr1, char* arr2);
-	int length(char* arr);
+	void editName(char*);
+
+	static Planet* resize(Planet* object, int& arr_size, const int& num_of_resize);
+	static int toInt(const char* arr);
+	static int length(char* arr);
 };

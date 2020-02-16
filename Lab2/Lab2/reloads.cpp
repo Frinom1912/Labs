@@ -2,7 +2,7 @@
 
 std::ofstream& operator<<(std::ofstream& out, const Planet& object)
 {
-	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(8) << object.population << " " << object.satellite;
+	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(6) << object.population << " " << object.satellite;
 	return out;
 }
 
@@ -39,8 +39,7 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 				{
 					if (countSp == 2)
 					{
-						object.population *= 10;
-						object.population += sym - '0';
+						object.population = (sym == '0' ? true : false);
 					}
 					else
 					{
@@ -70,34 +69,83 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 
 std::ostream& operator<<(std::ostream& out, const Planet& object)
 {
-	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(8) << object.population << " " << object.satellite << "\n";
+	out << std::left << std::setw(15) << object.name << " " << std::setw(10) << object.diameter << " " << std::setw(6) << object.population << " " << object.satellite << "\n";
 	return out;
 } 
 
 std::istream& operator>>(std::istream& in, Planet& object)
 {
 	std::cout << "Введите название планеты: ";
-	char newName[20];
-	std::cin >> newName;
+	char* newData = new char[15];
+	std::cin >> newData;
 	int i = 0;
-	for (; newName[i] != '\0'; i++);
+	for (; newData[i] != '\0'; i++);
 	if (object.name != nullptr)
 		delete[] object.name;
 	object.name = new char[i + 1];
 	for (int j = 0; j < i + 1; j++)
-		object.name[j] = newName[j];
+		object.name[j] = newData[j];
 	object.name_size = i + 1;
-	std::cout << "\nВведите диаметр планеты: ";
+	delete[] newData;
+
+	newData = new char[15];
 	int newDiameter;
-	std::cin >> newDiameter;
+	while (true)
+	{
+		std::cout << "\nВведите диаметр планеты: ";
+		std::cin >> newData;
+		newDiameter = Planet::toInt(newData);
+		if (newDiameter != -1)
+			break;
+		else
+		{
+			std::cout << "Некорректный ввод!\n";
+			_getch();
+		}
+	}
 	object.diameter = newDiameter;
-	std::cout << "\nВведите состояние жизни на планете: ";
-	int newPopulation;
-	std::cin >> newPopulation;
+	delete[] newData;
+
+	newData = new char[15];
+	bool newPopulation;
+	while (true)
+	{
+		std::cout << "\nВведите состояние жизни: ";
+		std::cin >> newData;
+		int i = 0;
+		for (; newData[i] != '\0'; i++);
+		if (i > 1 || (newData[0] > '1' || newData[0] < '0'))
+		{
+			std::cout << "Некорректный ввод!\n";
+			_getch();
+		}
+		else
+			break;
+	}
+	newPopulation = newData[0] - '0';
 	object.population = newPopulation;
-	std::cout << "\nВведите количество спутников планеты: ";
+	delete[] newData; 
+
+	newData = new char[15];
 	int newSatellite;
-	std::cin >> newSatellite;
+	while (true)
+	{
+		std::cout << "Введите количество спутников: ";
+		std::cin >> newData;
+		newSatellite = Planet::toInt(newData);
+		if (newSatellite != -1)
+			break;
+		else
+		{
+			std::cout << "Некорректный ввод!\n";
+			_getch();
+		}
+	}
 	object.satellite = newSatellite;
 	return in;
+}
+
+bool operator<(const Planet& object1, const Planet& object2)
+{
+	return (strcmp(object1.name, object2.name) > 0) ? true : false;
 }
