@@ -1,6 +1,6 @@
 #include "headers.h"
 using namespace std;
-void main() {
+/*void main() {
 	setlocale(0, "russian");
 	//ввод дроби с клавиатуры	
 	cout << "¬ведите дробь: \n";
@@ -39,4 +39,14 @@ void main() {
 	cout << "y=" << y << endl;
 	y += dbl + i + x;
 	cout << "y=" << y << endl;
+}
+*/
+
+int main()
+{
+	Fraction a("-1 3/4");
+	Fraction b(1, 4);
+	Fraction c = a + b;
+	system("cls");
+	return 0;
 }

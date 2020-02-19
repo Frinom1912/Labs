@@ -68,7 +68,6 @@ Planet* Planet::ReadBase(const char* fileName, Planet* object, int& objectCount)
 {
 	std::ifstream in(fileName);
 	unsigned char sym;
-	unsigned char lastSym;
 	in >> std::noskipws >> sym;
 	while (sym != '\n')
 		in >> std::noskipws >> sym;
