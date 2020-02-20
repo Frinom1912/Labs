@@ -7,11 +7,11 @@ public:
 	Fraction(const char*);
 	Fraction(double, int );
 	Fraction(int, int);
-	//Fraction(const Fraction*);
+	Fraction(const Fraction&);
 	~Fraction();
 
 	friend Fraction operator+(const Fraction& object1, const Fraction& object2);
-
+	Fraction operator=(const Fraction& object1);
 private:
 	int numinator;
 	bool isNegative;

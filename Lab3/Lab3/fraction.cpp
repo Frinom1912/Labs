@@ -95,10 +95,20 @@ Fraction::Fraction(int num, int denom)
 	denominator = denom;
 }
 
+Fraction::Fraction(const Fraction& object)
+{
+	this->numinator = object.
+}
+
 Fraction::~Fraction()
 {	
 	numinator = NULL;
 	denominator = NULL;	
+}
+
+Fraction Fraction::operator=(const Fraction& object1)
+{
+	object1.
 }
 
 Fraction operator+(const Fraction& object1, const Fraction& object2)
