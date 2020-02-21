@@ -5,4 +5,4 @@
   1)Fix memory
   2)Optimise
 
-# Lab3 is in progress :(
+# Lab3 is done :)
