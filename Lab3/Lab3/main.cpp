@@ -20,7 +20,7 @@ void main() {
 	cout << "f=" << f << endl;
 	//проверка перегруженной операции "+"
 	y = x + z;
-	/*
+	
 	cout << "y=" << y << endl;
 	y += x;
 	f += dbl / 2;
@@ -40,7 +40,6 @@ void main() {
 	cout << "y=" << y << endl;
 	y += dbl + i + x;
 	cout << "y=" << y << endl;
-	*/
 }
 
 

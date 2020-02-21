@@ -96,24 +96,22 @@ Fraction& Fraction::operator=(const Fraction& object1)
 Fraction& Fraction::operator=(const double& object)
 {
 	double num = object;
-	int N_DEC = 4;
-	numinator = 0;
-	denominator = pow(10, N_DEC);
-	if (num >= 1)
-	{
-		numinator += denominator * (int)num;
-		num -= (int)num;
-	}
+	this->toFraction(num, 4);
+	this->sort();
+	return *this;
+}
 
-	int res = 0;
-	for (int i = 0; i < N_DEC; i++)
-	{
-		num *= 10;
-		res *= 10;
-		res += (int)num;
-		num -= (int)num;
-	}
-	numinator += res;
+Fraction& Fraction::operator=(const int& object)
+{
+	this->numinator = object;
+	this->denominator = 1;
+	return *this;
+}
+
+Fraction& Fraction::operator+=(const Fraction& object)
+{
+	this->numinator += object.numinator;
+	this->denominator += object.denominator;
 	this->sort();
 	return *this;
 }
@@ -122,6 +120,13 @@ Fraction operator+(const Fraction& object1, const Fraction& object2)
 {
 	Fraction temp(object1.numinator * object2.denominator + object2.numinator * object1.denominator, object1.denominator * object2.denominator);
 	temp.sort();
+	return temp;
+}
+
+Fraction operator+(const Fraction& object1, const double& object2)
+{
+	Fraction temp(object2);
+	temp += object1;
 	return temp;
 }
 
@@ -240,4 +245,27 @@ void Fraction::sort()
 		}
 		del += 1;
 	}
+}
+
+Fraction Fraction::toFraction(double& num, int N_DEC)
+{
+	numinator = 0;
+	denominator = pow(10, N_DEC);
+	if (num >= 1)
+	{
+		numinator += denominator * (int)num;
+		num -= (int)num;
+	}
+
+	int res = 0;
+	for (int i = 0; i < N_DEC; i++)
+	{
+		num *= 10;
+		res *= 10;
+		res += (int)num;
+		num -= (int)num;
+	}
+	numinator += res;
+	this->sort();
+	return *this;
 }
