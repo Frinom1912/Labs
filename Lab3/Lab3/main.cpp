@@ -3,7 +3,7 @@ using namespace std;
 void main() {
 	setlocale(0, "russian");
 	//ввод дроби с клавиатуры	
-	cout << "¬ведите дробь: \n";
+	cout << "¬ведите дробь z: \n";
 	Fraction z;
 	cin >> z;
 	cout << "z=" << z << endl;
@@ -21,12 +21,13 @@ void main() {
 	//проверка перегруженной операции "+"
 	y = x + z;
 	
-	cout << "y=" << y << endl;
+	cout << "y = " << y << endl;
 	y += x;
+	cout << "y = " << y << endl;
 	f += dbl / 2;
-	cout << "f=" << f << endl;
+	cout << "f = " << f << endl;
 	y = x + dbl;
-	cout << "y=" << y << endl;
+	cout << "y = " << y << endl;
 	y = dbl + y;
 	cout << "y=" << y << endl;
 	y += dbl;
@@ -40,6 +41,5 @@ void main() {
 	cout << "y=" << y << endl;
 	y += dbl + i + x;
 	cout << "y=" << y << endl;
+	system("pause");
 }
-
-

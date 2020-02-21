@@ -110,16 +110,54 @@ Fraction& Fraction::operator=(const int& object)
 
 Fraction& Fraction::operator+=(const Fraction& object)
 {
-	this->numinator += object.numinator;
-	this->denominator += object.denominator;
+	std::cout << "\n" << *this << " += " << object << " = ";
+
+	this->denominator *= object.denominator;
+	this->numinator *= object.denominator;
+	this->numinator += object.numinator * this->denominator/object.denominator;
 	this->sort();
+
+	std::cout << *this << '\n';
+
+	return *this;
+
+}
+
+Fraction& Fraction::operator+=(const double& num)
+{
+	Fraction object(num);
+	std::cout << "\n" << *this << " += " << object << " = ";
+
+	this->denominator *= object.denominator;
+	this->numinator *= object.denominator;
+	this->numinator += object.numinator * this->denominator / object.denominator;
+	this->sort();
+
+	std::cout << *this << "\n";
+
+	return *this;
+}
+
+Fraction& Fraction::operator+=(const int& num)
+{
+	std::cout << "\n" << *this << " += " << num << " = ";
+
+	this->numinator += num * this->denominator;
+	this->sort();
+
+	std::cout << *this << "\n";
+
 	return *this;
 }
 
 Fraction operator+(const Fraction& object1, const Fraction& object2)
 {
+	std::cout << "\n" << object1 << " += " << object2 << " = ";
 	Fraction temp(object1.numinator * object2.denominator + object2.numinator * object1.denominator, object1.denominator * object2.denominator);
 	temp.sort();
+
+	std::cout << temp << "\n";
+
 	return temp;
 }
 
@@ -130,11 +168,34 @@ Fraction operator+(const Fraction& object1, const double& object2)
 	return temp;
 }
 
+Fraction operator+(const Fraction& object1, const int& object2)
+{
+	Fraction temp(object2,1);
+	temp += object1;
+	return temp;
+}
+
 Fraction operator-(const Fraction& object1, const Fraction& object2)
 {
 	Fraction temp(object1.numinator * object2.denominator - object2.numinator * object1.denominator, object1.denominator * object2.denominator);
 	temp.sort();
 	return temp;
+}
+
+Fraction operator-(Fraction& object1, const double& object2)
+{
+	Fraction temp(object2);
+	object1 = object1 - temp;
+	object1.sort();
+	return object1;
+}
+
+Fraction operator-(Fraction& object1, const int& object2)
+{
+	Fraction temp(object2);
+	object1 = object1 - temp;
+	object1.sort();
+	return object1;
 }
 
 std::istream& operator>>(std::istream& in, Fraction& object)
@@ -218,16 +279,16 @@ std::istream& operator>>(std::istream& in, Fraction& object)
 
 std::ostream& operator<<(std::ostream& out, const Fraction& object)
 {
-	if (object.numinator > object.denominator && object.denominator !=1)
+	if (std::abs(object.numinator) > std::abs(object.denominator) && object.denominator !=1)
 	{
-		out << object.numinator / object.denominator << " " << std::abs(object.numinator%object.denominator) << "/" << object.denominator << '\n';
+		out << object.numinator / object.denominator << " " << std::abs(object.numinator%object.denominator) << "/" << object.denominator;
 	}
 	else
 	{
 		if (object.denominator == 1)
-			out << object.numinator << "\n";
+			out << object.numinator;
 		else
-			out << object.numinator << "/" << object.denominator << '\n';
+			out << object.numinator << "/" << object.denominator;
 	}
 	return out;
 }
