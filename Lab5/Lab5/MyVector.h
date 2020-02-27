@@ -1,13 +1,10 @@
 #pragma once
-#include <iostream>
-
 const int MAX_SIZE = 5;
 
 class MyVector
 {
 public:
 	MyVector(const char* el = NULL, int maxsz = MAX_SIZE);
-
 	MyVector(MyVector& v);
 	~MyVector();
 
@@ -26,7 +23,8 @@ protected:
 	int size;
 	char** arr;
 
+	static int length(const char* arr);
+
 private:
 	void resize();
-	static int length(const char* arr);
 };

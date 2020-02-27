@@ -1,15 +1,20 @@
-#include "MyVector.h"
+#include "stdafx.h"
 
 MyVector::MyVector(const char* el, int maxsz)
 {
 	maxsize = maxsz;
-	size = 1;
-	int elSize = length(el);
+	size = 0;
 	arr = new char* [maxsize];
-	for (int i = 0; i < size; i++)
-		arr[i] = new char[elSize];
-	for (int i = 0; i < elSize; i++)
-		arr[0][i] = el[i];
+	if (el != NULL)
+	{
+		size++;
+		int elSize = length(el);
+		for (int i = 0; i < size; i++)
+			arr[i] = new char[elSize];
+		for (int i = 0; i < elSize; i++)
+			arr[0][i] = el[i];
+		
+	}
 }
 
 MyVector::MyVector(MyVector& v)
@@ -19,23 +24,24 @@ MyVector::MyVector(MyVector& v)
 
 MyVector::~MyVector()
 {
-	for (int i = 0; i < maxsize; i++)
+	for (int i = 0; i < size; i++)
 		delete[] arr[i];
 	delete[] arr;
 }
 
 void MyVector::add_element(const char* el)
 {
-	this->resize();
+	resize();
 	arr[size] = new char[length(el)];
 	for (int i = 0; i < length(el); i++)
 		arr[size][i] = el[i];
 	size++;
+	sort();
 }
 
 bool MyVector::delete_element(int i)
 {
-	this->resize();
+	resize();
 	for (int j = 0; j < size-1; j++)
 	{
 		if (j >= i)
@@ -44,6 +50,7 @@ bool MyVector::delete_element(int i)
 		}
 	}
 	size--;
+	sort();
 	return true;
 }
 
@@ -54,11 +61,50 @@ char* MyVector::operator[](int i)
 
 void MyVector::sort()
 {	
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = i + 1; j < size; j++)
+		{
+			if (strcmp(arr[i], arr[j]) > 0)
+			{
+				char* temp = new char[length(arr[i])];
+
+				for (int k = 0; k < length(arr[i]); k++)
+					temp[k] = arr[i][k];
+				arr[i] = arr[j];
+				arr[j] = temp;
+				temp = nullptr;
+			}
+		}
+	}
 }
 
 int MyVector::find(const char* el)
 {
-	return 0;
+	int mid = size/2, right=size, left=0;
+	int prevMid = -1;
+	while (true)
+	{
+		if (strcmp(el, arr[mid]) > 0)
+		{
+			left = mid;
+			mid = (right + left) / 2;
+		}
+		else
+		{
+			if (strcmp(el, arr[mid]) < 0)
+			{
+				right = mid;
+				mid = (right + left) / 2;
+			}
+			else
+				return mid;
+		}
+		if (prevMid == mid)
+			break;
+		prevMid = mid;
+	}
+	return -1;
 }
 
 MyVector& MyVector::operator=(MyVector& v)
@@ -75,7 +121,7 @@ MyVector& MyVector::operator=(MyVector& v)
 		{
 			arr[i][j] = v.arr[i][j];
 		}
-		arr[i][j + 1] = '\0';
+		arr[i][j] = '\0';
 	}
 	return *this;
 }
@@ -89,20 +135,22 @@ void MyVector::resize()
 	}
 	else
 	{
-		if (size -1 < maxsize / 2)
+		if (size - 1 < maxsize / 2)
 		{
-			tempSize = (int)(2*maxsize/3);
+			tempSize = (int)(2 * maxsize / 3);
 		}
+		else
+			tempSize = maxsize;
 	}
 	char** temp = new char* [tempSize];
 	for (int i = 0; i < size; i++)
 		temp[i] = new char[length(this->arr[i])];
-	for (int i = 0; i < maxsize; i++)
+	for (int i = 0; i < size; i++)
 	{
 		int j = 0;
 		for (; arr[i][j] != '\0'; j++)
 			temp[i][j] = arr[i][j];
-		temp[i][j + 1] = '\0';
+		temp[i][j] = '\0';
 	}
 	delete[] arr;
 	arr = temp;
@@ -118,5 +166,7 @@ int MyVector::length(const char* arr)
 
 std::ostream& operator<<(std::ostream& out, MyVector& v)
 {
+	for (int i = 0; i < v.size; i++)
+		out << v[i] << " ";
 	return out;
 }
