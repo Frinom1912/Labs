@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="MySet.h" />
     <ClInclude Include="MyVector.h" />
+    <ClInclude Include="MyVectorTemp.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

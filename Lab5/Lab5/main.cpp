@@ -5,6 +5,7 @@ using namespace std;
 int main()
 {
 	setlocale(0, "russian");
+	/*
 	MyVectorChar v("Hello!");
 	v.add_element("Привет!");
 	v.add_element("Привет!");
@@ -61,6 +62,11 @@ int main()
 		cout << "Множество s1=s3\n";
 	else
 		cout << "Множество s1!=s3\n";
+	system("pause");
+	return 0;
+	*/
+
+
 	system("pause");
 	return 0;
 }

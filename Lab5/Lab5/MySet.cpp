@@ -1,5 +1,4 @@
-#include "stdafx.h"
-
+#include "MySet.h"
 MySetChar::MySetChar(const MySetChar& obj)
 {
 	this->operator=(obj);

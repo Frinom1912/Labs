@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "MyVector.h"
 ////////// Char ////////////////
 MyVectorChar::MyVectorChar(const char* el, int maxsz)
 {
@@ -13,7 +13,6 @@ MyVectorChar::MyVectorChar(const char* el, int maxsz)
 			arr[i] = new char[elSize];
 		for (int i = 0; i < elSize; i++)
 			arr[0][i] = el[i];
-		
 	}
 }
 
@@ -169,65 +168,4 @@ std::ostream& operator<<(std::ostream& out, MyVectorChar& v)
 	for (int i = 0; i < v.size; i++)
 		out << v[i] << " ";
 	return out;
-}
-
-//////////////////////
-
-//////////////////// Template
-
-template<class INFO>
-MyVector<INFO>::MyVector(const INFO el, int maxsz)
-{
-
-}
-
-template<class INFO>
-MyVector<INFO>::MyVector(MyVector& v)
-{
-
-}
-
-template<class INFO>
-MyVector<INFO>::~MyVector()
-{
-
-}
-
-template<class INFO>
-void MyVector<INFO>::add_element(const INFO& el)
-{
-
-}
-template<class INFO>
-bool MyVector<INFO>::delete_element(int i)
-{
-
-}
-template<class INFO>
-INFO* MyVector<INFO>::operator[](int i)
-{
-
-}
-
-template<class INFO>
-void MyVector<INFO>::sort()
-{
-
-}
-
-template<class INFO>
-int MyVector<INFO>::find(const INFO& el)
-{
-
-}
-template<class INFO>
-MyVector<INFO>& MyVector<INFO>::operator=(MyVector<INFO>& v)
-{
-
-}
-
-template<class INFO>
-std::ostream& operator<<(std::ostream& out, MyVector<INFO>& v)
-{
-
 }

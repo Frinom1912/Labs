@@ -1,6 +1,5 @@
 #pragma once
 #include "MyVector.h"
-#include <iostream>
 class MySetChar : public MyVectorChar
 {
 public:
