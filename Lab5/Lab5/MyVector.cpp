@@ -1,6 +1,6 @@
 #include "stdafx.h"
-
-MyVector::MyVector(const char* el, int maxsz)
+////////// Char ////////////////
+MyVectorChar::MyVectorChar(const char* el, int maxsz)
 {
 	maxsize = maxsz;
 	size = 0;
@@ -17,19 +17,19 @@ MyVector::MyVector(const char* el, int maxsz)
 	}
 }
 
-MyVector::MyVector(MyVector& v)
+MyVectorChar::MyVectorChar(MyVectorChar& v)
 {
 	this->operator=(v);
 }
 
-MyVector::~MyVector()
+MyVectorChar::~MyVectorChar()
 {
 	for (int i = 0; i < size; i++)
 		delete[] arr[i];
 	delete[] arr;
 }
 
-void MyVector::add_element(const char* el)
+void MyVectorChar::add_element(const char* el)
 {
 	resize();
 	arr[size] = new char[length(el)];
@@ -39,7 +39,7 @@ void MyVector::add_element(const char* el)
 	sort();
 }
 
-bool MyVector::delete_element(int i)
+bool MyVectorChar::delete_element(int i)
 {
 	resize();
 	for (int j = 0; j < size-1; j++)
@@ -54,12 +54,12 @@ bool MyVector::delete_element(int i)
 	return true;
 }
 
-char* MyVector::operator[](int i)
+char* MyVectorChar::operator[](int i)
 {
 	return arr[i];
 }
 
-void MyVector::sort()
+void MyVectorChar::sort()
 {	
 	for (int i = 0; i < size - 1; i++)
 	{
@@ -79,7 +79,7 @@ void MyVector::sort()
 	}
 }
 
-int MyVector::find(const char* el)
+int MyVectorChar::find(const char* el)
 {
 	int mid = size/2, right=size, left=0;
 	int prevMid = -1;
@@ -107,7 +107,7 @@ int MyVector::find(const char* el)
 	return -1;
 }
 
-MyVector& MyVector::operator=(MyVector& v)
+MyVectorChar& MyVectorChar::operator=(MyVectorChar& v)
 {
 	maxsize = v.maxsize;
 	size = v.size;
@@ -126,7 +126,7 @@ MyVector& MyVector::operator=(MyVector& v)
 	return *this;
 }
 
-void MyVector::resize()
+void MyVectorChar::resize()
 {
 	int tempSize;
 	if (size + 1 > maxsize)
@@ -157,16 +157,77 @@ void MyVector::resize()
 	maxsize = tempSize;
 }
 
-int MyVector::length(const char* arr)
+int MyVectorChar::length(const char* arr)
 {
 	int i = 0; 
 	for (; arr[i] != '\0'; i++);
 	return i+1;
 }
 
-std::ostream& operator<<(std::ostream& out, MyVector& v)
+std::ostream& operator<<(std::ostream& out, MyVectorChar& v)
 {
 	for (int i = 0; i < v.size; i++)
 		out << v[i] << " ";
 	return out;
+}
+
+//////////////////////
+
+//////////////////// Template
+
+template<class INFO>
+MyVector<INFO>::MyVector(const INFO el, int maxsz)
+{
+
+}
+
+template<class INFO>
+MyVector<INFO>::MyVector(MyVector& v)
+{
+
+}
+
+template<class INFO>
+MyVector<INFO>::~MyVector()
+{
+
+}
+
+template<class INFO>
+void MyVector<INFO>::add_element(const INFO& el)
+{
+
+}
+template<class INFO>
+bool MyVector<INFO>::delete_element(int i)
+{
+
+}
+template<class INFO>
+INFO* MyVector<INFO>::operator[](int i)
+{
+
+}
+
+template<class INFO>
+void MyVector<INFO>::sort()
+{
+
+}
+
+template<class INFO>
+int MyVector<INFO>::find(const INFO& el)
+{
+
+}
+template<class INFO>
+MyVector<INFO>& MyVector<INFO>::operator=(MyVector<INFO>& v)
+{
+
+}
+
+template<class INFO>
+std::ostream& operator<<(std::ostream& out, MyVector<INFO>& v)
+{
+
 }

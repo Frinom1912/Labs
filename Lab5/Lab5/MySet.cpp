@@ -1,6 +1,30 @@
 #include "stdafx.h"
 
-bool MySet::operator==(MySet& s)
+MySetChar::MySetChar(const MySetChar& obj)
+{
+	this->operator=(obj);
+}
+
+MySetChar& MySetChar::operator=(const MySetChar& v)
+{
+	maxsize = v.maxsize;
+	size = v.size;
+	arr = new char* [maxsize];
+	for (int i = 0; i < size; i++)
+		arr[i] = new char[length(v.arr[i])];
+	for (int i = 0; i < size; i++)
+	{
+		int j = 0;
+		for (; v.arr[i][j] != '\0'; j++)
+		{
+			arr[i][j] = v.arr[i][j];
+		}
+		arr[i][j] = '\0';
+	}
+	return *this;
+}
+
+bool MySetChar::operator==(MySetChar& s)
 {
 	if (size == s.size)
 	{
@@ -25,24 +49,28 @@ bool MySet::operator==(MySet& s)
 		return false;
 }
 
-MySet& MySet::operator+=(MySet& s)
+MySetChar& MySetChar::operator+=(MySetChar& s)
 {
 	for (int i = 0; i < s.size; i++)
 		this->add_element(s[i]);
 	return *this;
 }
 
-MySet& MySet::operator-=(MySet& s)
+MySetChar& MySetChar::operator-=(MySetChar& s)
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size;)
 	{
 		if (s.is_element(this->arr[i]))
+		{
 			this->delete_element(arr[i]);
+		}
+		else
+			i++;
 	}
 	return *this;
 }
 
-MySet& MySet::operator*=(MySet& s)
+MySetChar& MySetChar::operator*=(MySetChar& s)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -52,39 +80,39 @@ MySet& MySet::operator*=(MySet& s)
 	return *this;
 }
 
-void MySet::add_element(const char* el)
+void MySetChar::add_element(const char* el)
 {
 	if (size == 0 || !is_element(el))
 	{
-		MyVector::add_element(el);
+		MyVectorChar::add_element(el);
 	}
 }
 
-void MySet::delete_element(const char* el)
+void MySetChar::delete_element(const char* el)
 {
 	if (find(el) != -1)
 	{
-		MyVector::delete_element(find(el));
+		MyVectorChar::delete_element(find(el));
 	}
 }
 
-bool MySet::is_element(const char* el)
+bool MySetChar::is_element(const char* el)
 {
 	return find(el) == -1 ? false : true;
 }
 
-std::ostream& operator<<(std::ostream& out, MySet& s)
+std::ostream& operator<<(std::ostream& out, MySetChar& s)
 {
 	out << "{ ";
 	for (int i = 0; i < s.size; i++)
-		out << s[i] << " ";
+		out << s[i] << ((i == s.size-1) ? "" : " , ");
 	out << "}";
 	return out;
 }
 
-MySet operator+(MySet& s1, MySet& s2)
+MySetChar operator+(MySetChar& s1, MySetChar& s2)
 {
-	MySet temp;
+	MySetChar temp;
 	for (int i = 0; i < s1.size; i++)
 		temp.add_element(s1[i]);
 	for (int i = 0; i < s2.size; i++)
@@ -92,9 +120,9 @@ MySet operator+(MySet& s1, MySet& s2)
 	return temp;
 }
 
-MySet operator-(MySet& s1, MySet& s2)
+MySetChar operator-(MySetChar& s1, MySetChar& s2)
 {	
-	MySet temp;
+	MySetChar temp;
 	for (int i = 0; i < s1.size; i++)
 	{
 		if (!s2.is_element(s1[i]))
@@ -103,9 +131,9 @@ MySet operator-(MySet& s1, MySet& s2)
 	return temp;
 }
 
-MySet operator*(MySet& s1, MySet& s2)
+MySetChar operator*(MySetChar& s1, MySetChar& s2)
 {
-	MySet temp;
+	MySetChar temp;
 	for (int i = 0; i < s1.size; i++)
 	{
 		if (s2.is_element(s1[i]))

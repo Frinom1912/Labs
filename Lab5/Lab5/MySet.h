@@ -1,20 +1,22 @@
 #pragma once
 #include "MyVector.h"
 #include <iostream>
-class MySet : public MyVector
+class MySetChar : public MyVectorChar
 {
 public:
-	MySet(const char* el = NULL) : MyVector(el) {};
+	MySetChar(const char* el = NULL) : MyVectorChar(el) {};
+	MySetChar(const MySetChar& obj);
 
-	friend std::ostream& operator<<(std::ostream& out, MySet& s);
-	friend MySet operator+(MySet& s1, MySet& s2);
-	friend MySet operator-(MySet& s1, MySet& s2);
-	friend MySet operator*(MySet& s1, MySet& s2);
+	friend std::ostream& operator<<(std::ostream& out, MySetChar& s);
+	friend MySetChar operator+(MySetChar& s1, MySetChar& s2);
+	friend MySetChar operator-(MySetChar& s1, MySetChar& s2);
+	friend MySetChar operator*(MySetChar& s1, MySetChar& s2);
 
-	bool operator==(MySet& s);
-	MySet& operator+=(MySet& s);
-	MySet& operator-=(MySet& s);
-	MySet& operator*=(MySet& s);
+	MySetChar& operator=(const MySetChar& v);
+	bool operator==(MySetChar& s);
+	MySetChar& operator+=(MySetChar& s);
+	MySetChar& operator-=(MySetChar& s);
+	MySetChar& operator*=(MySetChar& s);
 	void add_element(const char* el);
 	void delete_element(const char* el);
 	bool is_element(const char* el);

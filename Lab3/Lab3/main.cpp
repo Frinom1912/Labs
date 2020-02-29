@@ -2,10 +2,13 @@
 using namespace std;
 void main() {
 	setlocale(0, "russian");
-	//ввод дроби с клавиатуры	
+	//ввод дроби с клавиатуры		
 	cout << "¬ведите дробь z: \n";
 	Fraction z;
 	cin >> z;
+	char name[10];
+	cin >> name;
+	Fraction meme(name);
 	cout << "z=" << z << endl;
 	//проверка конструкторов
 	Fraction fr1(10, 14), fr2;
