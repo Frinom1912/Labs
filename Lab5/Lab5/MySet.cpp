@@ -102,7 +102,7 @@ bool MySetChar::is_element(const char* el)
 
 std::ostream& operator<<(std::ostream& out, MySetChar& s)
 {
-	out << "{ ";
+	out << "{";
 	for (int i = 0; i < s.size; i++)
 		out << s[i] << ((i == s.size-1) ? "" : " , ");
 	out << "}";

@@ -20,3 +20,4 @@ public:
 	void delete_element(const char* el);
 	bool is_element(const char* el);
 };
+
