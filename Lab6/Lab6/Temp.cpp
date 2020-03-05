@@ -20,14 +20,18 @@ Temp::~Temp()
 
 Temp& Temp::operator+=(const Temp& object)
 {
-	this->degree += object.degree;
-	this->k += object.k;
+	if(this->degree == object.degree)
+		this->k += object.k;
 	return *this;
 }
 
 std::ostream& operator<<(std::ostream& out, const Temp& object)
 {
-	out << object.k;
+	if (object.k != 1 && object.k != -1)
+		out << object.k;
+	else
+		if (object.k == -1)
+			out << "-";
 	if (object.degree == 0 && object.k != 0)
 		return out;
 	else
@@ -53,12 +57,32 @@ Temp operator+(const Temp& object1, const Temp& object2)
 std::istream& operator>>(std::istream& in, Temp& object)
 {
 	char* arr = new char[50];
+	bool isNegative = false;
 	bool isDegree = false;
+	bool isOne = true;
+	int fullPart = 0;
 	std::cin.getline(arr, 50);
+	for (int i = 0; arr[i] != 'x'; i++)
+	{
+		if (arr[i] >= '0' && arr[i] <= '9')
+		{
+			isOne = false;
+			fullPart *= 10;
+			fullPart += arr[i] - '0';
+		}
+	}
+	if (isOne)
+		fullPart = 1;
+	object.k = fullPart;
 	for (int i = 0; arr[i] != '\0'; i++)
 	{
 		if (arr[i] == ' ')
 			continue;
+		if (arr[i] == '-')
+		{
+			isNegative = !isNegative;
+			continue;
+		}
 		if (arr[i] == 'x')
 		{
 			isDegree = true;
@@ -68,18 +92,27 @@ std::istream& operator>>(std::istream& in, Temp& object)
 		}
 		else
 		{
-			if(arr[i]!='x' && arr[i]!='^' && arr[i]!=' ')
+			if (arr[i] != 'x' && arr[i] != '^' && arr[i] != ' ')
+			{
 				if (isDegree)
 				{
 					object.degree *= 10;
 					object.degree += arr[i] - '0';
 				}
-				else
-				{
-					object.k *= 10;
-					object.k += arr[i] - '0';
-				}
+			}
 		}
 	}
+	if (isNegative)
+		object.k *= -1;
 	return in;
+}
+
+int Temp::getK()
+{
+	return k;
+}
+
+int Temp::getDegree()
+{
+	return degree;
 }

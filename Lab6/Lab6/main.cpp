@@ -1,19 +1,13 @@
 #include "stdafx.h"
 using namespace std;
-
 int main()
 {
-	Temp a(3, 2);
-	Temp b(3);
-	Temp c(a);
 
-	cout << a << endl;
-
-	Temp d;
-
-	cin >> d;
-
-	cout << d << endl;
+	Temp a(3,2);
+	Temp c(3, 4);
+	Polynom b(a);
+	Polynom d;
+	d = b + c;
 
 	system("pause");
 	return 0;

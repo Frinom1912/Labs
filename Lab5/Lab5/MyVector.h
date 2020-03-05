@@ -19,6 +19,8 @@ public:
 	MyVectorChar& operator=(MyVectorChar& v);
 	friend std::ostream& operator<<(std::ostream& out, MyVectorChar& v);
 
+
+
 protected:
 	int maxsize;
 	int size;
