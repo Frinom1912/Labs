@@ -10,6 +10,7 @@ public:
 	Polynom operator=(const Polynom& object);
 	friend Polynom operator+(const Polynom& object1, const Polynom& object2);
 	friend std::ostream& operator<<(std::ostream&, const Polynom& object);
+	friend std::istream& operator>>(std::istream&, Polynom& object);
 private:
 	Temp* temp;
 	int size;

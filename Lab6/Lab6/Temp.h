@@ -7,7 +7,6 @@ public:
 	Temp(int k = 0, int degree = 0);
 	Temp(const Temp& object);
 	~Temp();
-	
     Temp& operator+=(const Temp& object);
 
 	int getK();
