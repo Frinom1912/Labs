@@ -6,11 +6,13 @@ public:
 	friend class Polynom;
 	Temp(int k = 0, int degree = 0);
 	Temp(const Temp& object);
-	~Temp();
     Temp& operator+=(const Temp& object);
 
 	int getK();
 	int getDegree();
+
+	void setK(int k);
+	void setDegree(int degree);
 
 	friend Temp operator+(const Temp& object1, const Temp& object2);
 	friend std::istream& operator>>(std::istream& in, Temp& object);

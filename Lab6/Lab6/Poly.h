@@ -12,6 +12,7 @@ public:
 	friend std::ostream& operator<<(std::ostream&, const Polynom& object);
 	friend std::istream& operator>>(std::istream&, Polynom& object);
 private:
+	Polynom& sort();
 	Temp* temp;
 	int size;
 };

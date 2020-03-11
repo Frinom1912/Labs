@@ -12,12 +12,6 @@ Temp::Temp(const Temp& object)
 	degree = object.degree;
 }
 
-Temp::~Temp()
-{
-	k = 0;
-	degree = 0;
-}
-
 Temp& Temp::operator+=(const Temp& object)
 {
 	if(this->degree == object.degree)
@@ -27,13 +21,16 @@ Temp& Temp::operator+=(const Temp& object)
 
 std::ostream& operator<<(std::ostream& out, const Temp& object)
 {
-	if (object.k != 1 && object.k != -1)
+	if (object.k != 1 && object.k != -1 && object.degree != 0)
 		out << object.k;
 	else
-		if (object.k == -1)
+		if (object.k == -1 && object.degree != 0)
 			out << "-";
 	if (object.degree == 0 && object.k != 0)
+	{
+		out << object.k;
 		return out;
+	}
 	else
 	{
 		if (object.k != 0 && object.degree == 1)
@@ -115,4 +112,14 @@ int Temp::getK()
 int Temp::getDegree()
 {
 	return degree;
+}
+
+void Temp::setDegree(int degree)
+{
+	this->degree = degree;
+}
+
+void Temp::setK(int k)
+{
+	this->k = k;
 }

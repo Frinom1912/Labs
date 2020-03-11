@@ -62,11 +62,26 @@ Polynom operator+(const Polynom& object1, const Polynom& object2)
 
 std::ostream& operator<<(std::ostream& out, const Polynom& object)
 {
+	for (int i = 0; i < object.size - 1; i++)
+	{
+		for (int j = i + 1; j < object.size; j++)
+		{
+			if (object.temp[i].getDegree() < object.temp[j].getDegree())
+			{
+				Temp copy = object.temp[i];
+				object.temp[i] = object.temp[j];
+				object.temp[j] = copy;
+			}
+		}
+	}
 	for (int i = 0; i < object.size; i++)
 	{
-		out << object.temp[i];
-		if (object.temp[i+1].getK() > 0 && i+1!=object.size)
-			out << "+";
+		if (object.temp[i].getK() != 0)
+		{
+			out << object.temp[i];
+			if (object.temp[i + 1].getK() > 0 && i + 1 != object.size)
+				out << "+";
+		}
 	}
 	return out;
 }
@@ -83,6 +98,7 @@ std::istream& operator>>(std::istream& in, Polynom& object)
 		{
 			for (int j = i; str[j] != '\0'; j++)
 				str[j] = str[j + 1];
+			i--;
 		}
 	}
 
@@ -93,7 +109,7 @@ std::istream& operator>>(std::istream& in, Polynom& object)
 	
 	object.size = 1;
 
-	for (int i = 0; str[i] != '\0'; i++)
+	for (int i = 0; str[i] != '\0';)
 	{
 		if (str[i] == '+' || str[i] == '-')
 		{
@@ -102,55 +118,76 @@ std::istream& operator>>(std::istream& in, Polynom& object)
 				copy[i] = object.temp[i];
 			object.temp = copy;
 			object.size++;
-			continue;
 		}
 		bool isNegative = false;
 		bool isDegree = false;
 		bool isOne = true;
 		int fullPart = 0;
-		std::cin.getline(arr, 50);
-		for (int i = 0; arr[i] != 'x'; i++)
+
+		if (str[i] == '-')
 		{
-			if (arr[i] >= '0' && arr[i] <= '9')
+			isNegative = true;
+			i++;
+		}
+		else
+			if (str[i] == '+')
+				i++;
+
+		for (; str[i] != 'x'; i++)
+		{
+			if (str[i] >= '0' && str[i] <= '9')
 			{
 				isOne = false;
 				fullPart *= 10;
-				fullPart += arr[i] - '0';
+				fullPart += str[i] - '0';
 			}
 		}
 		if (isOne)
 			fullPart = 1;
-		object.k = fullPart;
-		for (int i = 0; arr[i] != '\0'; i++)
+		object.temp[object.size-1].setK(fullPart);
+
+		for (; str[i] != '^'; i++);
+		if (str[i] == '^')
+			i++;
+		for (; str[i]!='\0'; i++)
 		{
-			if (arr[i] == ' ')
-				continue;
-			if (arr[i] == '-')
+			if (str[i] != '+' && str[i] != '-')
 			{
-				isNegative = !isNegative;
-				continue;
+				object.temp[object.size - 1].setDegree(object.temp[object.size - 1].getDegree() * 10);
+				object.temp[object.size - 1].setDegree(object.temp[object.size - 1].getDegree() + (str[i] - '0'));
 			}
-			if (arr[i] == 'x')
-			{
-				isDegree = true;
-				while (arr[i] != '^')
-					i++;
-				continue;
-			}
-			else
-			{
-				if (arr[i] != 'x' && arr[i] != '^' && arr[i] != ' ')
-				{
-					if (isDegree)
-					{
-						object.degree *= 10;
-						object.degree += arr[i] - '0';
-					}
-				}
-			}
+			else break;
 		}
 		if (isNegative)
-			object.k *= -1;
+			object.temp[object.size - 1].setK(object.temp[object.size - 1].getK() * (-1));
 	}
+	object.sort();
 	return in;
+}
+
+Polynom& Polynom::sort()
+{
+	int size = this->size;
+	for (int i = 0; i < this->size-1; i++)
+	{
+		for (int j = i+1; j < this->size; j++)
+		{
+			if (this->temp[i].degree == this->temp[j].degree)
+			{
+				this->temp[i].k += this->temp[j].k;
+				Temp* copy = new Temp[this->size - 1];
+				for (int m = 0, n = 0; n < this->size; m++,n++)
+				{
+					if (m != j)
+						copy[n] = this->temp[m];
+					else
+						n--;
+						
+				}
+				this->temp = copy;
+				this->size--;
+			}
+		}
+	}
+	return *this;
 }

@@ -5,14 +5,10 @@ class Fraction
 public:
 	Fraction();
 	Fraction(const char*);
-	Fraction(double num, int N_DEC = 4)
-	{
-		this->toFraction(num, N_DEC);
-	}
-	Fraction(int, int);
+	Fraction(double num, int N_DEC = 4);
+	Fraction(int, int denominator = 1);
 	Fraction(const Fraction&);
-	~Fraction();
-
+	
 	friend std::istream& operator>>(std::istream& in, Fraction& object);
 	friend std::ostream& operator<<(std::ostream& out, const Fraction& object);
 	friend Fraction operator+(const Fraction& object1, const Fraction& object2);
@@ -27,11 +23,14 @@ public:
 	Fraction& operator+=(const Fraction& object);
 	Fraction& operator+=(const double& num);
 	Fraction& operator+=(const int& num);
+	Fraction& operator-=(const Fraction& object);
+	Fraction& operator-=(const double& num);
+	Fraction& operator-=(const int& num);
 
 private:
 
 	void sort();
-	Fraction toFraction(double& num, int N_DEC);
+	Fraction toFraction(double& num, int N_DEC = 4);
 	int numinator;
 	int denominator;
 };
