@@ -27,7 +27,7 @@ Fraction::Fraction(const char* arr)
 
 	for (int i = 0; arr[i] != '\0'; i++)
 	{
-		if (arr[i] != '-' || arr[i] != '/' || arr[i] != ' ' || arr[i] < '0' || arr[i] > '9')
+		if (arr[i] != '-' && arr[i] != '/' && arr[i] != ' ' && (arr[i] < '0' || arr[i] > '9'))
 		{
 			std::cout << "¬вод неизвестных символов!\n";
 			numinator = 0;
@@ -228,25 +228,26 @@ Fraction operator+(const Fraction& object1, const int& object2)
 
 Fraction operator-(const Fraction& object1, const Fraction& object2)
 {
-	Fraction temp(object1.numinator * object2.denominator - object2.numinator * object1.denominator, object1.denominator * object2.denominator);
+	Fraction temp(object1);
+	temp -= object2;
 	temp.sort();
 	return temp;
 }
 
 Fraction operator-(Fraction& object1, const double& object2)
 {
-	Fraction temp(object2);
-	object1 = object1 - temp;
-	object1.sort();
-	return object1;
+	Fraction temp(object1);
+	temp -= object2;
+	temp.sort();
+	return temp;
 }
 
 Fraction operator-(Fraction& object1, const int& object2)
 {
-	Fraction temp(object2);
-	object1 = object1 - temp;
-	object1.sort();
-	return object1;
+	Fraction temp(object1);
+	temp -= object2;
+	temp.sort();
+	return temp;
 }
 
 std::istream& operator>>(std::istream& in, Fraction& object)
@@ -260,9 +261,15 @@ std::istream& operator>>(std::istream& in, Fraction& object)
 	{
 		char arr[15];
 
-		for (int i = 0; arr[i - 1] != '\n'; i++)
-			in >> std::noskipws >> arr[i];
+		in.getline(arr, 15);
 
+		object = arr;
+
+		if (object.denominator != 0)
+			break;
+		else
+			std::cout << "ќшибка, деление на 0!\n";
+		/*
 		object.numinator = 0;
 		for (int i = 0; arr[i] != '\n'; i++)
 			if (arr[i] == ' ')
@@ -322,7 +329,8 @@ std::istream& operator>>(std::istream& in, Fraction& object)
 	object.numinator += object.denominator * full;
 	if (isNegative)
 		object.numinator *= -1;
-
+		*/
+	}
 	object.sort();
 
 	return in;

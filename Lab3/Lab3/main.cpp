@@ -7,7 +7,7 @@ void main() {
 	Fraction z;
 	cin >> z;
 	char name[10];
-	cin >> name;
+	std::cin.getline(name,10);
 	Fraction meme(name);
 	cout << "z=" << z << endl;
 	//проверка конструкторов
