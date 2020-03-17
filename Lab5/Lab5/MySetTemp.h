@@ -26,7 +26,7 @@ public:
 	friend MySet<INFO> operator+ <INFO>(MySet<INFO>& s1, MySet<INFO>& s2);
 	friend MySet<INFO> operator- <INFO>(MySet<INFO>& s1, MySet<INFO>& s2);
 	friend MySet<INFO> operator* <INFO>(MySet<INFO>& s1, MySet<INFO>& s2);
-
+	
 	MySet<INFO>& operator=(const MySet<INFO>& v);
 	bool operator==(MySet<INFO>& s);
 	MySet<INFO>& operator+=(MySet<INFO>& s);
@@ -35,11 +35,6 @@ public:
 	void add_element(const INFO el);
 	void delete_element(const INFO el);
 	bool is_element(const INFO el);
-
-	using MyVector<INFO>::maxsize;
-	using MyVector<INFO>::size;
-	using MyVector<INFO>::arr;
-	using MyVector<INFO>::length;
 };
 
 template <class INFO>
@@ -184,22 +179,7 @@ MySet<INFO> operator*(MySet<INFO>& s1, MySet<INFO>& s2)
 	return temp;
 }
 
-
-template <unsigned N> class MySet<char[N]>;
-
-template<unsigned N>
-std::ostream& operator<<(std::ostream& out, MySet<char[N]>& s);
-
-template<unsigned N>
-MySet<char[N]> operator+(MySet<char[N]>& s1, MySet<char[N]>& s2);
-
-template<unsigned N>
-MySet<char[N]> operator-(MySet<char[N]>& s1, MySet<char[N]>& s2);
-
-template<unsigned N>
-MySet<char[N]> operator*(MySet<char[N]>& s1, MySet<char[N]>& s2);
-
- 
+template<>
 class MySet<char*> : public MyVector<char*>
 {
 public:
@@ -207,7 +187,7 @@ public:
 	MySet(const MySet<char*>& obj);
 
 	friend std::ostream& operator<<(std::ostream& out, MySet<char*>& s);
-	friend MySet<char*> operator+ (MySet<char*>& s1, MySet<char*>& s2);
+	friend MySet<char*> operator+(MySet<char*>& s1, MySet<char*>& s2);
 	friend MySet<char*> operator-(MySet<char*>& s1, MySet<char*>& s2);
 	friend MySet<char*> operator*(MySet<char*>& s1, MySet<char*>& s2);
 
@@ -219,14 +199,13 @@ public:
 	void add_element(const char* el);
 	void delete_element(const char* el);
 	bool is_element(const char* el);
-	
-	using MyVector<char*>::maxsize;
-	using MyVector<char*>::size;
-	using MyVector<char*>::arr;
-	using MyVector<char*>::length;
 };
 
- 
+MySet<char*>::MySet(const MySet<char*>& obj)
+{
+	this->operator=(obj);
+}
+
 MySet<char*>& MySet<char*>::operator=(const MySet<char*>& v)
 {
 	maxsize = v.maxsize;
@@ -245,7 +224,6 @@ MySet<char*>& MySet<char*>::operator=(const MySet<char*>& v)
 	}
 	return *this;
 }
-
  
 bool MySet<char*>::operator==(MySet<char*>& s)
 {
@@ -277,7 +255,7 @@ void MySet<char*>::add_element(const char* el)
 {
 	if (this->size == 0 || !is_element(el))
 	{
-		MyVector<char*>::add_element(el);
+		MyVector::add_element(el);
 	}
 }
 
@@ -286,7 +264,7 @@ void MySet<char*>::delete_element(const char* el)
 {
 	if (this->find(el) != -1)
 	{
-		MyVector<char*>::delete_element(find(el));
+		MyVector::delete_element(find(el));
 	}
 }
 
@@ -296,7 +274,6 @@ bool MySet<char*>::is_element(const char* el)
 	return this->find(el) == -1 ? false : true;
 }
 
- 
 std::ostream& operator<<(std::ostream& out, MySet<char*>& s)
 {
 	out << "{";
@@ -304,4 +281,37 @@ std::ostream& operator<<(std::ostream& out, MySet<char*>& s)
 		out << s[i] << ((i == s.size - 1) ? "" : " , ");
 	out << "}";
 	return out;
+}
+
+
+MySet<char*> operator+(MySet<char*>& s1, MySet<char*>& s2)
+{
+	MySet<char*> temp;
+	for (int i = 0; i < s1.size; i++)
+		temp.add_element(s1[i]);
+	for (int i = 0; i < s2.size; i++)
+		temp.add_element(s2[i]);
+	return temp;
+}
+
+MySet<char*> operator-(MySet<char*>& s1, MySet<char*>& s2)
+{
+	MySet<char*> temp;
+	for (int i = 0; i < s1.size; i++)
+	{
+		if (!s2.is_element(s1[i]))
+			temp.add_element(s1[i]);
+	}
+	return temp;
+}
+
+MySet<char*> operator*(MySet<char*>& s1, MySet<char*>& s2)
+{
+	MySet<char*> temp;
+	for (int i = 0; i < s1.size; i++)
+	{
+		if (s2.is_element(s1[i]))
+			temp.add_element(s1[i]);
+	}
+	return temp;
 }

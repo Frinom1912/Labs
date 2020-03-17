@@ -196,15 +196,19 @@ class MyVector<char*>
 {
 public:
 	MyVector(const char* el = NULL, int maxsz = 5);
+	MyVector(MyVector<char*>& v);
 	~MyVector();
 
 	void add_element(const char* el);
 	bool delete_element(int i);
-	void sort();
 	char* operator[](int i);
+
+	void sort();
+
 	int find(const char* el);
 	MyVector<char*>& operator=(MyVector<char*>& v);
 	friend std::ostream& operator<<(std::ostream& out, const MyVector<char*> v);
+
 protected:
 	int maxsize;
 	int size;
@@ -231,6 +235,10 @@ MyVector<char*>::MyVector(const char* el, int maxsz)
 	}
 }
 
+MyVector<char*>::MyVector(MyVector<char*>& v)
+{
+	this->operator=(v);
+}
  
 MyVector<char*>::~MyVector()
 {
@@ -239,7 +247,11 @@ MyVector<char*>::~MyVector()
 	delete[] arr;
 }
 
- 
+char* MyVector<char*>::operator[](int i)
+{
+	return arr[i];
+}
+
 void MyVector<char*>::add_element(const char* el)
 {
 	resize();
@@ -368,10 +380,16 @@ void MyVector<char*>::resize()
 	maxsize = tempSize;
 }
 
- 
 std::ostream& operator<<(std::ostream& out, const MyVector<char*> v)
 {
 	for (int i = 0; i < v.size; i++)
 		out << v.arr[i] << " ";
 	return out;
 };
+
+int MyVector<char*>::length(const char* arr)
+{
+	int i = 0;
+	for (; arr[i] != '\0'; i++);
+	return i + 1;
+}
