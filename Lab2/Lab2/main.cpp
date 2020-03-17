@@ -22,7 +22,7 @@ int main()
 			}
 			else
 				break;
-		}
+		}	
 		switch (res)
 		{
 		case 1:
@@ -55,11 +55,10 @@ int main()
 			_getch();
 			break;
 		}
-		case 6: 
+		case 6:
+			delete[] object;
+			system("pause");
 			return 0;
 		}
 	}
-	delete[] object;
-	system("pause");
-	return 0;
 }

@@ -2,11 +2,11 @@
 
 Planet::Planet()
 {
-	this->name = new char[1];
-	this->name_size = 1;
-	this->diameter = 0;
-	this->satellite = 0;
-	this->population = false;
+	name = new char;
+	name_size = 1;
+	diameter = 0;
+	satellite = 0;
+	population = false;
 }
 
 Planet::Planet(const Planet& object)
@@ -16,35 +16,30 @@ Planet::Planet(const Planet& object)
 
 Planet::~Planet()
 {
-	this->diameter = 0;
-	this->population = false;
-	this->satellite = 0;
-	delete[] this->name;
+	delete[] name;
 }
 
 Planet& Planet::operator=(const Planet& object)
 {
-	this->name_size = object.name_size;
-	this->name = new char[this->name_size];
-	for (int i = 0; i < this->name_size; i++)
-		this->name[i] = object.name[i];
-	this->diameter = object.diameter;
-	this->population = object.population;
-	this->satellite = object.satellite;
+	name_size = object.name_size;
+	name = new char[name_size];
+	for (int i = 0; i < name_size; i++)
+		name[i] = object.name[i];
+	diameter = object.diameter;
+	population = object.population;
+	satellite = object.satellite;
 	return *this;
 }
 
 void Planet::editName(char* newName)
 {
-	if (this->name != nullptr)
-		delete[] this->name;
-	int i = 0;
-	while (newName[i] != '\0')
-		i++;
-	this->name = new char[i+1];
-	for (int j = 0; j < i + 1; j++)
-		this->name[j] = newName[j];
-	this->name_size = i+1;
+	if (name != nullptr)
+		delete[] name;
+	int i = length(newName) + 1;
+	name = new char[i];
+	for (int j = 0; j < i; j++)
+		name[j] = newName[j];
+	name_size = i;
 }
 
 void Planet::sortName(Planet* object, const int& objectCount)
@@ -53,10 +48,9 @@ void Planet::sortName(Planet* object, const int& objectCount)
 	{
 		for (int j = i + 1; j < objectCount; j++)
 		{
-			if (object[i] < object[j])
+			if (object[i] > object[j])
 			{
-				Planet temp;
-				temp = object[i];
+				Planet temp(object[i]);
 				object[i] = object[j];
 				object[j] = temp;
 			}
@@ -82,7 +76,7 @@ Planet* Planet::ReadBase(const char* fileName, Planet* object, int& objectCount)
 
 void Planet::WriteBase(const char* fileName, const Planet* object, const int& objectCount)
 {
-	std::ofstream out("text.txt", std::ios_base::trunc);
+	std::ofstream out(fileName, std::ios_base::trunc);
 	out << std::left << std::setw(15) << "Название" << " " << std::setw(10) << "Диаметр" << " " << std::setw(8) << "Жизни" << " " << "Спутники\n";
 	for (int j = 0; j < objectCount; j++)
 	{
@@ -291,8 +285,7 @@ Planet* Planet::EditBase(Planet* object, int& objectCount)
 int Planet::length(char* arr)
 {
 	int length = 0;
-	for (int i = 0; arr[i] != '\0'; i++)
-		length++;
+	for (; arr[length] != '\0'; length++);
 	return length;
 }
 
@@ -312,15 +305,15 @@ int Planet::toInt(const char* arr)
 	return res;
 }
 
-Planet* Planet::resize(Planet* object, int& arr_size, const int& num_of_resize)
+Planet* Planet::resize(Planet* object, int& size, const int& resize)
 {
-	Planet* temp = new Planet[arr_size + num_of_resize];
-	for (int j = 0; j < (num_of_resize > 0 ? arr_size : arr_size-num_of_resize); j++)
+	Planet* temp = new Planet[size + resize];
+	for (int j = 0; j < (resize > 0 ? size : size-resize); j++)
 	{
 		temp[j] = object[j];
 	}
 	if (object != nullptr)
 		delete[] object;
-	arr_size+=num_of_resize;
+	size+=resize;
 	return temp;
 }

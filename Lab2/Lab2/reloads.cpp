@@ -16,7 +16,9 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 	{
 		if (sym != ' ' && sym != '\t')
 		{
-			if (countSp == 0)
+			switch (countSp)
+			{
+			case 0:
 			{
 				char* temp = new char[object.name_size + 1];
 				for (int i = 0; i < object.name_size; i++)
@@ -27,29 +29,19 @@ std::ifstream& operator>>(std::ifstream& in, Planet& object)
 				delete[] object.name;
 				object.name = temp;
 				temp = nullptr;
+				break;
 			}
-			else
-			{
-				if (countSp == 1)
-				{
-					object.diameter *= 10;
-					object.diameter += sym - '0';
-				}
-				else
-				{
-					if (countSp == 2)
-					{
-						object.population = (sym == '0' ? true : false);
-					}
-					else
-					{
-						if (countSp == 3)
-						{
-							object.satellite *= 10;
-							object.satellite += sym - '0';
-						}
-					}
-				}
+			case 1:
+				object.diameter *= 10;
+				object.diameter += sym - '0';
+				break;
+			case 2:
+				object.population = (sym != '0');
+				break;
+			case 3:
+				object.satellite *= 10;
+				object.satellite += sym - '0';
+				break;
 			}
 		}
 		else
@@ -130,7 +122,7 @@ std::istream& operator>>(std::istream& in, Planet& object)
 	int newSatellite;
 	while (true)
 	{
-		std::cout << "Введите количество спутников: ";
+		std::cout << "\nВведите количество спутников: ";
 		std::cin >> newData;
 		newSatellite = Planet::toInt(newData);
 		if (newSatellite != -1)
@@ -145,7 +137,7 @@ std::istream& operator>>(std::istream& in, Planet& object)
 	return in;
 }
 
-bool operator<(const Planet& object1, const Planet& object2)
+bool operator>(const Planet& object1, const Planet& object2)
 {
 	return (strcmp(object1.name, object2.name) > 0) ? true : false;
 }
