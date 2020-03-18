@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
 	setlocale(0, "russian");
-	
+
 	MyVector<char*> v("Hello!");
 	v.add_element("Привет!");
 	v.add_element("Привет!");
