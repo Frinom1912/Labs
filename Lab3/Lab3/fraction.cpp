@@ -1,91 +1,131 @@
-#include "headers.h"
-
-Fraction::Fraction()
-{
-	numinator = 0;
-	denominator = 1;
-}
+#include "fraction.h"
 
 Fraction::Fraction(const char* arr)
 {
-	numinator = 0;
-	bool isNegative = false;
-	denominator = 0;
-	int slashInd;
-	int spaceInd = -1;
-	int full = 0;
+	int length = -1, full = 0;
+	bool isFull = false, isOk = true;
+	
+	for (; arr[++length] != '\0';);
 
-	for (int i = 0; arr[i] != '\0'; i++)
-		if (arr[i] == ' ')
-			spaceInd = i;
-		else
-			if (arr[i] == '/')
+	char* temp = new char[++length];
+
+	for (int i = 0; i < length-1; i++)
+	{
+		temp[i] = arr[i];
+		if(arr[i] > '9' || arr[i] < '0')
+			if (arr[i] != ' ' && arr[i] != '-' && arr[i] != '/')
 			{
-				slashInd = i;
+				isOk = false;
+			}
+	}
+	temp[length-1] = '\0';
+	int minusID = -1, slashID = -1, spaceID = -1;
+
+	if (isOk)
+	{
+		for (int i = 0; temp[i] == ' ' && temp[i] != '\0'; i++)
+		{
+			for (int j = i--; temp[j] != '\0'; j++)
+				temp[j] = temp[j + 1];
+		}
+
+		for (int i = 0; temp[i] != '\0'; i++)
+		{
+			switch (temp[i])
+			{
+			case '-':
+			{
+				minusID = i;
 				break;
 			}
+			case '/':
+			{
+				slashID = i;
+				break;
+			}
+			case ' ':
+			{
+				spaceID = i;
+				break;
+			}
+			}
+			if (temp[i + 1] == '\0' && slashID == -1)
+			{
+				slashID = i + 1;
+				isFull = true;
+			}
+		}
 
-	for (int i = 0; arr[i] != '\0'; i++)
-	{
-		if (arr[i] != '-' && arr[i] != '/' && arr[i] != ' ' && (arr[i] < '0' || arr[i] > '9'))
+		if (minusID > 0)
 		{
-			std::cout << "Ввод неизвестных символов!\n";
+			std::cout << "Неверный ввод строки\n";
 			numinator = 0;
 			denominator = 1;
-			break;
 		}
 		else
 		{
-			if (arr[i] == ' ')
-				continue;
-			if (arr[i] == '-')
+			numinator = 0;
+			denominator = 0;
+			for (int i = 0; temp[i] != '\0'; i++)
 			{
-				isNegative = !isNegative;
-			}
-			else
-			{
-				if (i < spaceInd && spaceInd > 0)
+				if (temp[i] == ' ' || temp[i] == '/' || temp[i] == '-')
+					continue;
+				if (i < spaceID)
 				{
 					full *= 10;
-					full += arr[i] - '0';
+					full += temp[i] - '0';
 				}
 				else
-				{
-					if (arr[i] != '/' && slashInd > i)
+					if (i > spaceID && i < slashID)
 					{
 						numinator *= 10;
-						numinator += arr[i] - '0';
+						numinator += temp[i] - '0';
 					}
 					else
-					{
-						if (arr[i] == '/')
-							continue;
-						else
+						if (i > slashID)
 						{
 							denominator *= 10;
-							denominator += arr[i] - '0';
+							denominator += temp[i] - '0';
 						}
-					}
-				}
 			}
 		}
+		if (isFull)
+			denominator = 1;
+		else
+			if (denominator == 0)
+			{
+				std::cout << "Неверный ввод строки: деление на 0\n";
+				numinator = 0;
+				denominator = 1;
+				full = 0;
+			}
+		numinator += denominator * full;
+		if (minusID == 0)
+			numinator *= -1;
+		int del = sort(numinator, denominator);
+		numinator /= del;
+		denominator /= del;
 	}
-	numinator += denominator * full;
-	if (isNegative)
-		numinator *= -1;
-	this->sort();
+	else
+	{
+		std::cout << "Неверный ввод строки: неизвестный символ\n";
+		numinator = 0;
+		denominator = 1;
+	}
 }
 
 Fraction::Fraction(int num, int denom)
 {
 	numinator = num;
 	denominator = denom;
-	this->sort();
+	int del = sort(numinator, denominator); 
+	numinator/=del; 
+	denominator/=del;
 }
 
 Fraction::Fraction(double num, int N_DEC)
 {
-	this->toFraction(num, N_DEC);
+	toFraction(num, N_DEC);
 }
 
 Fraction::Fraction(const Fraction& object)
@@ -93,25 +133,27 @@ Fraction::Fraction(const Fraction& object)
 	*this = object;
 }
 
-Fraction& Fraction::operator=(const Fraction& object1)
+Fraction& Fraction::operator=(const Fraction& object)
 {
-	this->numinator = object1.numinator;
-	this->denominator = object1.denominator;
+	numinator = object.numinator;
+	denominator = object.denominator;
 	return *this;
 }
 
 Fraction& Fraction::operator=(const double& object)
 {
-	double num = object;
-	this->toFraction(num);
-	this->sort();
+	double temp = object;
+	toFraction(temp);
+	int del = sort(numinator, denominator); 
+	numinator/=del; 
+	denominator/=del;
 	return *this;
 }
 
 Fraction& Fraction::operator=(const int& object)
 {
-	this->numinator = object;
-	this->denominator = 1;
+	numinator = object;
+	denominator = 1;
 	return *this;
 }
 
@@ -119,10 +161,12 @@ Fraction& Fraction::operator+=(const Fraction& object)
 {
 	std::cout << "\n" << *this << " += " << object << " = ";
 
-	this->denominator *= object.denominator;
-	this->numinator *= object.denominator;
-	this->numinator += object.numinator * this->denominator/object.denominator;
-	this->sort();
+	numinator *= object.denominator;
+	numinator += object.numinator * denominator;
+	denominator *= object.denominator;
+	int del = sort(numinator, denominator); 
+	numinator/=del; 
+	denominator/=del;
 
 	std::cout << *this << '\n';
 
@@ -133,13 +177,8 @@ Fraction& Fraction::operator+=(const Fraction& object)
 Fraction& Fraction::operator+=(const double& num)
 {
 	Fraction object(num);
-	std::cout << "\n" << *this << " += " << object << " = ";
 
-	this->operator+=(object);
-
-	this->sort();
-
-	std::cout << *this << "\n";
+	operator+=(object);
 
 	return *this;
 }
@@ -148,8 +187,10 @@ Fraction& Fraction::operator+=(const int& num)
 {
 	std::cout << "\n" << *this << " += " << num << " = ";
 
-	this->numinator += num * this->denominator;
-	this->sort();
+	numinator += num *denominator;
+	int del = sort(numinator, denominator); 
+	numinator/=del; 
+	denominator/=del;
 
 	std::cout << *this << "\n";
 
@@ -160,11 +201,13 @@ Fraction& Fraction::operator-=(const Fraction& object)
 {
 	std::cout << "\n" << *this << " -= " << object << " = ";
 
-	this->denominator *= object.denominator;
-	this->numinator *= object.denominator;
-	this->numinator -= object.numinator * this->denominator / object.denominator;
-	
-	this->sort();
+	numinator *= object.denominator;
+	numinator -= object.numinator * denominator;
+	denominator *= object.denominator;
+
+	int del = sort(numinator, denominator);
+	numinator/=del; 
+	denominator/=del;
 
 	std::cout << *this << "\n";
 
@@ -173,15 +216,10 @@ Fraction& Fraction::operator-=(const Fraction& object)
 
 Fraction& Fraction::operator-=(const double& object)
 {
-	std::cout << "\n" << *this << " -= " << object << " = ";
 
 	Fraction temp(object);
 
-	this->operator-=(temp);
-
-	this->sort();
-
-	std::cout << *this << "\n";
+	operator-=(temp);
 
 	return *this;
 }
@@ -190,25 +228,17 @@ Fraction& Fraction::operator-=(const int& object)
 {
 	std::cout << "\n" << *this << " -= " << object << " = ";
 
-	this->numinator -= object;
+	numinator -= object*denominator;
 
 	std::cout << *this << "\n";
 
 	return *this;
 }
 
-
 Fraction operator+(const Fraction& object1, const Fraction& object2)
 {
-	std::cout << "\n" << object1 << " + " << object2 << " = ";
-
 	Fraction temp(object1);
 	temp += object2;
-
-	temp.sort();
-
-	std::cout << temp << "\n";
-
 	return temp;
 }
 
@@ -226,121 +256,63 @@ Fraction operator+(const Fraction& object1, const int& object2)
 	return temp;
 }
 
+Fraction operator+(const double& object1, const Fraction& object2)
+{
+	return operator+(object2,object1);
+}
+
+Fraction operator+(const int& object1, const Fraction& object2)
+{
+	return operator+(object2,object1);
+}
+
 Fraction operator-(const Fraction& object1, const Fraction& object2)
 {
 	Fraction temp(object1);
 	temp -= object2;
-	temp.sort();
 	return temp;
 }
 
-Fraction operator-(Fraction& object1, const double& object2)
+Fraction operator-(const Fraction& object1, const double& object2)
 {
 	Fraction temp(object1);
 	temp -= object2;
-	temp.sort();
 	return temp;
 }
 
-Fraction operator-(Fraction& object1, const int& object2)
+Fraction operator-(const Fraction& object1, const int& object2)
 {
 	Fraction temp(object1);
 	temp -= object2;
-	temp.sort();
 	return temp;
+}
+
+Fraction operator-(const double& object1, const Fraction& object2)
+{
+	return operator-(object2, object1);
+}
+
+Fraction operator-(const int& object1, const Fraction& object2)
+{
+	return operator-(object2, object1);
 }
 
 std::istream& operator>>(std::istream& in, Fraction& object)
 {
-	object.denominator = 0;
-	int slashInd;
-	int spaceInd = -1;
-	int full = 0;
-	bool isNegative = false;
-	while (object.denominator == 0)
-	{
-		char arr[15];
+	char arr[25];
+	
+	in.getline(arr, 25);
 
-		in.getline(arr, 15);
-
-		object = arr;
-
-		if (object.denominator != 0)
-			break;
-		else
-			std::cout << "Ошибка, деление на 0!\n";
-		/*
-		object.numinator = 0;
-		for (int i = 0; arr[i] != '\n'; i++)
-			if (arr[i] == ' ')
-			{
-				spaceInd = i;
-			}
-			else
-			{
-				if (arr[i] == '/')
-				{
-					slashInd = i;
-					break;
-				}
-			}
-		for (int i = 0; arr[i] != '\n'; i++)
-		{
-			if (arr[i] == ' ')
-				continue;
-			if (arr[i] == '-')
-			{
-				isNegative = !isNegative;
-			}
-			else
-			{
-				if (i < spaceInd && spaceInd > 0)
-				{
-					full *= 10;
-					full += arr[i] - '0';
-				}
-				else
-				{
-					if (arr[i] != '/' && slashInd > i)
-					{
-						object.numinator *= 10;
-						object.numinator += arr[i] - '0';
-					}
-					else
-					{
-						if (arr[i] == '/')
-							continue;
-						else
-						{
-							object.denominator *= 10;
-							object.denominator += arr[i] - '0';
-						}
-					}
-				}
-			}
-		}
-		if (object.denominator == 0)
-		{
-			std::cout << "\nОшибка, деление на ноль!\n";
-			isNegative = false;
-			full = 0;
-		}
-	}
-	object.numinator += object.denominator * full;
-	if (isNegative)
-		object.numinator *= -1;
-		*/
-	}
-	object.sort();
+	object = arr;
 
 	return in;
 }
 
 std::ostream& operator<<(std::ostream& out, const Fraction& object)
 {
-	if (std::abs(object.numinator) > std::abs(object.denominator) && object.denominator !=1)
+	if (abs(object.numinator) > abs(object.denominator) && object.denominator !=1)
 	{
-		out << object.numinator / object.denominator << " " << std::abs(object.numinator%object.denominator) << "/" << object.denominator;
+		out << object.numinator / object.denominator << " " << abs(object.numinator%object.denominator) << "/" << object.denominator;
 	}
 	else
 	{
@@ -352,32 +324,23 @@ std::ostream& operator<<(std::ostream& out, const Fraction& object)
 	return out;
 }
 
-void Fraction::sort()
+int sort(int N, int M)
 {
-	int min = std::abs(numinator) < std::abs(denominator) ? std::abs(numinator) : std::abs(denominator);
-	int del = 2;
-	while (del <= min)
-	{
-		while (numinator % del == 0 && denominator % del == 0)
-		{
-			denominator /= del;
-			numinator /= del;
-		}
-		del += 1;
-	}
+	if (abs(N % M) == 0 || abs(N) == 0)
+		return abs(M);
+	return sort(abs(M), abs(N % M));
 }
 
-Fraction Fraction::toFraction(double& num, int N_DEC)
+Fraction Fraction::toFraction(double num, int N_DEC)
 {
 	numinator = 0;
 	denominator = pow(10, N_DEC);
+	int res = 0;
 	if (num >= 1)
 	{
 		numinator += denominator * (int)num;
 		num -= (int)num;
 	}
-
-	int res = 0;
 	for (int i = 0; i < N_DEC; i++)
 	{
 		num *= 10;
@@ -386,6 +349,44 @@ Fraction Fraction::toFraction(double& num, int N_DEC)
 		num -= (int)num;
 	}
 	numinator += res;
-	this->sort();
+	int del = sort(numinator, denominator); 
+	numinator/=del; 
+	denominator/=del;
 	return *this;
+}
+
+Fraction& operator+=(double& a, const Fraction& object)
+{
+	std::cout << "\n" << a << " += " << object << " = ";
+	Fraction temp(a);
+	temp += object;
+	std::cout << temp << '\n';
+	return temp;
+}
+
+Fraction& operator+=(int& a, const Fraction& object)
+{
+	std::cout << "\n" << a << " += " << object << " = ";
+	Fraction temp(a);
+	temp += object;
+	std::cout << temp << '\n';
+	return temp;
+}
+
+Fraction& operator-=(double& a, const Fraction& object)
+{
+	std::cout << "\n" << a << " -= " << object << " = ";
+	Fraction temp(a);
+	temp -= object;
+	std::cout << temp << '\n';
+	return temp;
+}
+
+Fraction& operator-=(int& a, const Fraction& object)
+{
+	std::cout << "\n" << a << " -= " << object << " = ";
+	Fraction temp(a);
+	temp -= object;
+	std::cout << temp << '\n';
+	return temp;
 }

@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "fraction.h"
 using namespace std;
 void main() {
 	setlocale(0, "russian");
@@ -6,9 +6,6 @@ void main() {
 	cout << "¬ведите дробь z: \n";
 	Fraction z;
 	cin >> z;
-	char name[10];
-	std::cin.getline(name,10);
-	Fraction meme(name);
 	cout << "z=" << z << endl;
 	//проверка конструкторов
 	Fraction fr1(10, 14), fr2;
@@ -27,7 +24,7 @@ void main() {
 	cout << "y = " << y << endl;
 	y += x;
 	cout << "y = " << y << endl;
-	f += dbl / 2;
+	f += (dbl / 2);
 	cout << "f = " << f << endl;
 	y = x + dbl;
 	cout << "y = " << y << endl;
@@ -43,6 +40,6 @@ void main() {
 	y = x + i;
 	cout << "y=" << y << endl;
 	y += dbl + i + x;
-	cout << "y=" << y << endl;
+	cout << "y=" << y << endl; 
 	system("pause");
 }
