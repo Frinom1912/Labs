@@ -23,6 +23,8 @@ Polynom::Polynom(const int num)
 Polynom Polynom::operator=(const Polynom& object)
 {
 	this->size = object.size;
+	if (temp != nullptr)
+		delete[] temp;
 	this->temp = new Temp[size];
 	for (int i=0; i < size; i++)
 		temp[i] = object.temp[i];
@@ -31,13 +33,14 @@ Polynom Polynom::operator=(const Polynom& object)
 
 Polynom operator+(const Polynom& object1, const Polynom& object2)
 {
-	Polynom a(object1);
-	bool isRegistered = false;
+	Polynom a;
+	a = object1;
 	for (int i = 0; i < object2.size; i++)
 	{
-		for (int j = 0; j < object1.size; j++)
+		bool isRegistered = false;
+		for (int j = 0; j < a.size; j++)
 		{
-			if (object2.temp[i].getDegree() == object1.temp[j].getDegree())
+			if (object2.temp[i].getDegree() == a.temp[j].getDegree())
 			{
 				a.temp[j].operator+=(object2.temp[i]);
 				isRegistered = true;
@@ -46,18 +49,48 @@ Polynom operator+(const Polynom& object1, const Polynom& object2)
 		}
 		if (!isRegistered)
 		{
-			Temp* copy = new Temp[object1.size+1];
-			for (int i = 0; i < object1.size; i++)
+			Temp* copy = new Temp[a.size+1];
+			for (int i = 0; i < a.size; i++)
 			{
-				copy[i] = object1.temp[i];
+				copy[i] = a.temp[i];
 			}
-			copy[object1.size] = object2.temp[i];
+			copy[a.size] = object2.temp[i];
 			a.temp = copy;
 			copy = nullptr;
 			a.size++;
 		}
 	}
 	return a;
+}
+
+Polynom operator*(Polynom& object1, Polynom& object2)
+{
+	if (object1.size > object2.size)
+	{
+		Polynom temp;
+		temp = object2;
+		object2 = object1;
+		object1 = temp;
+	}
+
+	Polynom* arr = new Polynom[object1.size];
+	for (int i = 0; i < object1.size; i++)
+	{
+		arr[i] = object2;
+		for (int j = 0; j < object2.size; j++)
+		{
+			arr[i].temp[j].setDegree(arr[i].temp[j].getDegree() + object1.temp[i].getDegree());
+			arr[i].temp[j].setK(arr[i].temp[j].getK() * object1.temp[i].getK());
+		}
+	}
+	Polynom res;
+	res = arr[0];
+	for (int i = 1; i < object1.size; i++)
+	{
+		res = res + arr[i];
+	}
+	delete[] arr;
+	return res;
 }
 
 std::ostream& operator<<(std::ostream& out, const Polynom& object)
@@ -181,8 +214,7 @@ Polynom& Polynom::sort()
 					if (m != j)
 						copy[n] = this->temp[m];
 					else
-						n--;
-						
+						n--;	
 				}
 				this->temp = copy;
 				this->size--;
